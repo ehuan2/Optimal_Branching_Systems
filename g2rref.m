@@ -20,20 +20,26 @@ j = 1;
 
 while (i <= m) && (j <= n)
    % Find value and index of largest element in the remainder of column j.
-   [~,k] = max(abs(A(i:m,j))); k = k+i-1;
+   k = find(A(i:m,j),1) + i - 1;
 
    % Swap i-th and k-th rows.
    A([i k],j:n) = A([k i],j:n);
-   % Divide the pivot row by the pivot element.
-   A(i,j:n) = A(i,j:n)/A(i,j);
-   A = mod(A,2);
    
-   % Subtract multiples of the pivot row from all the other rows.
-   for k = [1:i-1 i+1:m]
-       A(k,j:n) = A(k,j:n) - A(k,j)*A(i,j:n);
-       A = mod(A,2);
-   end
+   % Save the right hand side of the pivot row
+   aijn = A(i,j:n);
+   
+   % Column we're looking at
+   col = A(1:m,j);
+   
+   % Never Xor the pivot row against itself
+   col(i) = 0;
+   
+   % This builds an matrix of bits to flip
+   flip = col*aijn;
+   
+   % Xor the right hand side of the pivot row with all the other rows
+   A(1:m,j:n) = xor( A(1:m,j:n), flip );
+
    i = i + 1;
    j = j + 1;
 end
-
