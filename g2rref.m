@@ -3,7 +3,7 @@
 % Tolerance was removed because yolo, and because all values
 % should only be 0 or 1.  @benathon
 
-function [Ar, M, N] = g2rref(A)
+function [Ar, M, N, k] = g2rref(A)
 %G2RREF   Reduced row echelon form in gf(2).
 %   R = RREF(A) produces the reduced row echelon form of A in gf(2).
 %
@@ -59,3 +59,4 @@ M = Ar(1:m,(n+1):nr);
 Ar = Ar(1:m,1:n);
 N = [mod(eye(m,n) + Ar + [diag(diag(Ar)), zeros(m, n-m)], 2);
                 zeros(n-m,m), eye(n-m)];
+k = sum(diag(Ar));
