@@ -3,7 +3,7 @@
 % Tolerance was removed because yolo, and because all values
 % should only be 0 or 1.  @benathon
 
-function [Arref, M, N, rnk] = gf2rref(A)
+function [Arref, M, N, rnk] = g2rref(A)
 %G2RREF   Reduced row echelon form in gf(2).
 %   R = RREF(A) produces the reduced row echelon form of A in gf(2).
 %
