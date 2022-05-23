@@ -29,7 +29,7 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   % step 4:
   [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
 
-  
+  % step 5:
 
 end
 

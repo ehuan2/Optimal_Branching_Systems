@@ -1,9 +1,20 @@
-function R = bfs(S, G)
+function [R, backtrack] = bfs(S, G)
   % given two sets, S representing nodes (so a 1 x n matrix), and an edge matrix G, that's n x n
   % bfs(S, G) represents the vertices reachable from S in G
+  % adding in a return vector of backtrack that represents its parent so we can find the smallest path (also 1 x |E|)
 
   % start with the set of reachable edges, R itself as the ones in S.
   R = S;
+
+  % add to backtrack, we represent the unreachable by -1, and ones in S by 0.
+  backtrack = zeros(size(S));
+  for i = 1:size(S, 2)
+    if S(i) == 1
+      backtrack(i) = 0;
+    else
+      backtrack(i) = -1;
+    end
+  end
 
   % maintain a queue by having an index for its head and tail
   head = 1;
@@ -34,6 +45,9 @@ function R = bfs(S, G)
         R(j) = 1;
         queue{tail} = j;
         tail = tail + 1;
+
+        % add to the backtrack now
+        backtrack(j) = next;
       end
     end
   end
