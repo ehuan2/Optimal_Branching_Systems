@@ -20,7 +20,10 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   c1 = c;
   c2 = zeros(1, E);
 
-  while(1)
+  goBackToStep2 = 1;
+  goBackToStep4 = 1;
+
+  while goBackToStep2 == 1
     % step 2:
     [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2);
 
@@ -28,7 +31,7 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
     [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
 
     % step 4:
-    while (1)
+    while goBackToStep4 == 1
       [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
 
       % step 5:
@@ -41,22 +44,48 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
         % set Xk+1 as Xk, add k = k + 1 and go back to 2.
         k = k + 1;
         setOfXk{k + 1} = XkPlusOne;
-        continue; % go back to step 2
+        break;
       end
 
       % step 7:
-      [epsilon, isInfinity] = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T);
+      epsilon = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T);
       
       % step 8:
-      if isInfinity == 1
-        
-      else
-        % less than infinity, go back to step 4.
-        % first, change the functions of c1 and c2:
-        for i = 1:size(c1, 2)
+      if epsilon == inf
+        % choose the one with maximum weight amongst X0, X1 ... Xk, ie the sum of the weights in Xi
 
+        maxWeight = -inf;
+
+        for i = 1:size(setOfXk, 2)
+          Xi = setOfXk(i);
+          currentWgt = 0;
+
+          for j = 1:size(Xi, 2)
+            if Xi(j) == 1
+              % add to the current weight
+              currentWgt = currentWgt + c(j);
+            end
+          end
+
+          if currentWgt > maxWeight
+            % change what X is, as well as the max weight
+            X = Xi;
+            maxWeight = currentWgt;
+          end
         end
 
+        goBackToStep2 = 0;
+        goBackToStep4 = 0;
+        break;
+      else
+        % less than infinity, go back to step 4 after rewriting c1 and c2
+
+        for x = 1:size(R, 2)
+          if R(x) == 1
+            c1(x) = c1(x) - epsilon;
+            c2(x) = c2(x) + epsilon;
+          end
+        end
       end
     end
   end
