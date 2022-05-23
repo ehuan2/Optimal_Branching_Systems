@@ -1,5 +1,5 @@
 function R = bfs(S, G)
-  % given two sets, S representing nodes (so a 1 x n matrix), and an edge matrix G
+  % given two sets, S representing nodes (so a 1 x n matrix), and an edge matrix G, that's n x n
   % bfs(S, G) represents the vertices reachable from S in G
 
   % start with the set of reachable edges, R itself as the ones in S.

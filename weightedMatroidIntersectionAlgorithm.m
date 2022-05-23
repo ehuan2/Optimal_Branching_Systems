@@ -21,16 +21,15 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   c2 = zeros(1, E);
 
   % step 2:
-  [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2)
+  [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2);
 
   % step 3:
-  [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2)
+  [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
 
   % step 4:
-end
+  [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
 
-% performs step 4 of the weighted matroid intersection algorithm
-function [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2)
+  
 
 end
 
