@@ -29,11 +29,6 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   % step 4:
 end
 
-% performs step 3 of the weighted matroid intersection algorithm
-function [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk, F1, F2, C1, C2)
-
-end
-
 % performs step 4 of the weighted matroid intersection algorithm
 function [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2)
 
