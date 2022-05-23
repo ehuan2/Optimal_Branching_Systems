@@ -10,7 +10,6 @@ function [C1, C2] = wgtMatroidIntersectStep2(E, Xk, F1, F2)
   % helper function for step 2, where we compute Ci for the given Fi and Xk and y
   function Ci = step2ComputeCi(Fi, Xk, y)
     % given a cell array for Fi and a matrix for Xk and y, returns (Xk, y, Ci(Xk, y)), with Ci(Xk, y) being a matrix
-    % returns 
     Ci = {Xk, y};
     CiActualSet = zeros(size(Xk)); % mark as a 1 x |E| matrix with all 0's
     CiCounter = 1;
@@ -25,7 +24,7 @@ function [C1, C2] = wgtMatroidIntersectStep2(E, Xk, F1, F2)
       XkUnionYExcludeX = XkUnionY;
       XkUnionYExcludeX(x) = 0;
 
-      if doesXBelongInY(XkUnionY, F1) == 0 && doesXBelongInY(XkUnionYExcludeX, Fi)
+      if doesXBelongInY(XkUnionY, Fi) == 0 && doesXBelongInY(XkUnionYExcludeX, Fi)
         % now we add it in
         CiActualSet(x) = 1;
       end
@@ -48,10 +47,10 @@ function [C1, C2] = wgtMatroidIntersectStep2(E, Xk, F1, F2)
       XkUnionY(y) = 1;
 
       % check first if Xk U {y} belongs in Fi
-      C1{c1Counter} = step2ComputeCi(F1, Xk, y)
+      C1{c1Counter} = step2ComputeCi(F1, Xk, y);
       c1Counter = c1Counter + 1;
 
-      C2{c2Counter} = step2ComputeCi(F2, Xk, y)
+      C2{c2Counter} = step2ComputeCi(F2, Xk, y);
       c2Counter = c2Counter + 1;
     end
   end

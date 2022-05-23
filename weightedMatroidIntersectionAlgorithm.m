@@ -38,3 +38,5 @@ end
 function [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2)
 
 end
+
+% function epsilon = wgtMatroidIntersectStep7(c1, c2, )
