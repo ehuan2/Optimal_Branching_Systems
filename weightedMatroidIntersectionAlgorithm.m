@@ -20,17 +20,31 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   c1 = c;
   c2 = zeros(1, E);
 
-  % step 2:
-  [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2);
+  while(1)
+    % step 2:
+    [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2);
 
-  % step 3:
-  [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
+    % step 3:
+    [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
 
-  % step 4:
-  [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
+    % step 4:
+    [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
 
-  % step 5:
+    % step 5:
+    [R, backtrack] = bfs(Sbar, Gbar);
+
+    % step 6: check if R intersect T is empty
+    [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, setOfXk{k + 1}, backtrack);
+
+    if RIntersectTBarEmpty == 1
+      % set Xk+1 as Xk, add k = k + 1 and go back to 2.
+      k = k + 1;
+      setOfXk{k + 1} = XkPlusOne;
+      continue; % go back to step 2
+    end
+
+    % step 7
+
+  end
 
 end
-
-% function epsilon = wgtMatroidIntersectStep7(c1, c2, )
