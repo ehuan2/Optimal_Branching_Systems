@@ -28,23 +28,36 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
     [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
 
     % step 4:
-    [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
+    while (1)
+      [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, c1, c2, S, T, A1, A2);
 
-    % step 5:
-    [R, backtrack] = bfs(Sbar, Gbar);
+      % step 5:
+      [R, backtrack] = bfs(Sbar, Gbar);
 
-    % step 6: check if R intersect T is empty
-    [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, setOfXk{k + 1}, backtrack);
+      % step 6: check if R intersect T is empty
+      [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, setOfXk{k + 1}, backtrack);
 
-    if RIntersectTBarEmpty == 1
-      % set Xk+1 as Xk, add k = k + 1 and go back to 2.
-      k = k + 1;
-      setOfXk{k + 1} = XkPlusOne;
-      continue; % go back to step 2
+      if RIntersectTBarEmpty == 1
+        % set Xk+1 as Xk, add k = k + 1 and go back to 2.
+        k = k + 1;
+        setOfXk{k + 1} = XkPlusOne;
+        continue; % go back to step 2
+      end
+
+      % step 7:
+      [epsilon, isInfinity] = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T);
+      
+      % step 8:
+      if isInfinity == 1
+        
+      else
+        % less than infinity, go back to step 4.
+        % first, change the functions of c1 and c2:
+        for i = 1:size(c1, 2)
+
+        end
+
+      end
     end
-
-    % step 7
-
   end
-
 end
