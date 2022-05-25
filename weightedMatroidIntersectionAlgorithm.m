@@ -1,4 +1,4 @@
-function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
+function X = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   % param:
   % E is the base set, here is simply a number of its size
   % F1 and F2 are matrices that represent the independent subsets of E
@@ -25,10 +25,10 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
 
   while goBackToStep2 == 1
     % step 2:
-    [C1, C2] = wgtMatroidIntersectStep2(E, Xk{k + 1}, F1, F2);
+    [C1, C2] = wgtMatroidIntersectStep2(E, setOfXk{k + 1}, F1, F2);
 
     % step 3:
-    [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk{k + 1}, F1, F2, C1, C2);
+    [A1, A2, S, T] = wgtMatroidIntersectStep3(E, setOfXk{k + 1}, F1, F2, C1, C2);
 
     % step 4:
     while goBackToStep4 == 1
@@ -57,7 +57,7 @@ function [C1, C2] = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
         maxWeight = -inf;
 
         for i = 1:size(setOfXk, 2)
-          Xi = setOfXk(i);
+          Xi = setOfXk{i};
           currentWgt = 0;
 
           for j = 1:size(Xi, 2)

@@ -43,9 +43,11 @@ end
 function mi = calculateMi(ci, setX)
   mi = 0; % given S is null, it'd be 0
   for y = 1:size(setX, 2)
-    next = ci(y);
-    if next > mi
-      mi = next;
+    if setX(y) == 1
+      next = ci(y);
+      if next > mi
+        mi = next;
+      end
     end
   end
 end
