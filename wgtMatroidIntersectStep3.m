@@ -48,7 +48,7 @@ function [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk, F1, F2, C1, C2)
   end
   
   % computing S: should be a 1 x |E| size
-  S = zeros(size(Xk))
+  S = zeros(size(Xk));
 
   for y = 1:E
     if Xk(y) == 0
@@ -62,7 +62,7 @@ function [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk, F1, F2, C1, C2)
   end
 
   % computing T: should be a 1 x |E| size
-  T = zeros(size(Xk))
+  T = zeros(size(Xk));
 
   for y = 1:E
     if Xk(y) == 0
@@ -80,7 +80,8 @@ end
 function CiActualSet = getCiFromKeyY(Ci, y)
   for i = 1:size(Ci, 2)
     % Ci{i}{2} gives the second one, or the y
-    if (Ci{i}){2} == y
+    set = Ci{i};
+    if set{2} == y
       CiActualSet = Ci{i}{3}; % and the actual set is in the third section
     end
   end
