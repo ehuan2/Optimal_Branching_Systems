@@ -34,14 +34,15 @@ function [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, 
     end
 
     for i = 1:size(A2bar, 2)
-      [y x] = A2bar(i);
+      y = A2bar{i}(1);
+      x = A2bar{i}(2);
       Gbar(x, y) = 1;
       Gbar(y, x) = 1;
     end
 end
 
 function mi = calculateMi(ci, setX)
-  mi = 0; % given S is null, it'd be 0
+  mi = -inf; % given S is null, it'd be 0
   for y = 1:size(setX, 2)
     if setX(y) == 1
       next = ci(y);
@@ -55,9 +56,11 @@ end
 function xBar = calculateXbar(X, ci, mi)
   xBar = zeros(size(X));
   for y = 1:size(X, 2)
-    if ci(y) == mi
-      xBar(y) = 1;
-    end
+      if X(y) == 1
+        if ci(y) == mi
+            xBar(y) = 1;
+        end
+      end
   end
 end
 
@@ -66,7 +69,8 @@ function AiBar = calculateAiBar(Ai, ci)
   AiBarCounter = 1;
 
   for i = 1:size(Ai, 2)
-    [first, second] = Ai(i)
+    first = Ai{i}(1);
+    second = Ai{i}(2);
     if ci(first) == ci(second)
       AiBar{AiBarCounter} = [first second];
       AiBarCounter = AiBarCounter + 1;

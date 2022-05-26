@@ -78,6 +78,7 @@ end
 
 % single pass through Ci, to get the right struct with key y
 function CiActualSet = getCiFromKeyY(Ci, y)
+   CiActualSet = [0 0 0];
   for i = 1:size(Ci, 2)
     % Ci{i}{2} gives the second one, or the y
     set = Ci{i};

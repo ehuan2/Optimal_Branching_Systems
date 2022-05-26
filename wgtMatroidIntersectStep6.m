@@ -22,12 +22,12 @@ function [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, Xk
       RIntersectTBar(i) = 1;
     end
   end
-  
-  if RIntersectTBarEmpty == 1
+
+  if RIntersectTBarEmpty == 0
     % if we do need to calculate the path, we do it, iterate over RIntersectTBar
     
     % hold these values to find the minimum path, at most it's all of the nodes
-    minPathLength = size(RIntersectTBar, 2) + 1;
+    minPathLength = inf;
     minVofP = zeros(size(R));
 
     for i = 1:size(RIntersectTBar, 2)
@@ -42,7 +42,7 @@ function [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, Xk
 
     for i = 1:size(R, 2)
       % finds the disjunctive union, basically xor of the minVofP and Xk
-      if Xk(i) ~= minVofP(i) && ((Xk(i) & minVofP(i)) == 1)
+      if Xk(i) ~= minVofP(i) && ((Xk(i) || minVofP(i)) == 1)
         XkPlusOne(i) = 1;
       end
     end
@@ -57,9 +57,9 @@ function [VofP, pathLength] = calculateVofP(backtrack, TbarNode)
   VofP = zeros(size(backtrack));
 
   % should not get to -1, but just in case
-  while current ~= 0 || current ~= -1
+  while current ~= 0 && current ~= -1
+    VofP(current) = 1;
     current = backtrack(TbarNode);
     pathLength = pathLength + 1;
-    VofP(current) = 1;
   end
 end

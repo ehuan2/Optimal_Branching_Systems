@@ -56,7 +56,7 @@ function epsilon = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T)
     end
   end
 
-  epsilon = min([eps1 eps2 eps3 eps4])
+  epsilon = min([eps1 eps2 eps3 eps4]);
 end
 
 function [deltaPlus, empty] = calculateDeltaPlus(Ai, R)
@@ -66,10 +66,12 @@ function [deltaPlus, empty] = calculateDeltaPlus(Ai, R)
   deltaPlus = {};
   deltaPlusCounter = 1;
   empty = 1;
+
   % iterate over Ai, adding in the point [x y] if x is in R, and y is in Ai \ R
   for i = 1:size(Ai, 2)
-    [x, y] = Ai(i);
-    if R(x) == 1 && Ai(y) == 1 && R(y) == 0
+    x = Ai{i}(1);
+    y = Ai{i}(2);
+    if R(x) == 1 && R(y) == 0
       deltaPlus{deltaPlusCounter} = [x y];
       deltaPlusCounter = deltaPlusCounter + 1;
       empty = 0;
