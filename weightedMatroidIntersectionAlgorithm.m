@@ -40,7 +40,7 @@ function X = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
       % step 6: check if R intersect T is empty
       [RIntersectTBarEmpty, XkPlusOne] = wgtMatroidIntersectStep6(R, Tbar, setOfXk{k + 1}, backtrack);
 
-      if RIntersectTBarEmpty == 1
+      if RIntersectTBarEmpty == 0
         % set Xk+1 as Xk, add k = k + 1 and go back to 2.
         k = k + 1;
         setOfXk{k + 1} = XkPlusOne;
