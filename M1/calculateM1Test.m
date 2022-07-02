@@ -18,3 +18,23 @@ roots2 = [1 0 0 1 0];
 M1_two = calculateM1(G2, roots2);
 % expected value:
 % basis of {1, 2, 4, 6, 7}, {1, 2, 4, 7, 8, 9}, {1, 2, 6, 7, 8, 9}
+
+% extra five node example
+G3 = [0 1 1 1 1; 0 0 0 1 1; 0 1 0 0 1; 0 0 1 0 1; 0 1 1 0 0];
+roots3 = [1 0 0 1 0];
+M1_three = calculateM1(G3, roots3);
+% expected value:
+% basis of size 4 choose 2 times 3 choose 2 times 3 choose 2, or 54
+% should be all combos of subsets of 2 of {1, 7, 11} x {2, 9, 12} x {4, 6, 8, 10}
+
+% three node examples:
+G4 = [0 1 1; 0 0 1; 0 0 0];
+roots4 = [1 0 0];
+M1_four = calculateM1(G4, roots4);
+
+roots5 = [1 0 1];
+M1_five = calculateM1(G4, roots5);
+
+% four node example, pg.11 of cocreate, M2 has different basis
+G5 = [0 1 1 0; 0 0 1 1; 0 0 0 1; 0 1 1 0];
+[M2_five, Arref5, indiceMatrix5, transformedA5] = calculateM2(G5);
