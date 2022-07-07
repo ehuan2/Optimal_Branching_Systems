@@ -182,6 +182,37 @@ gdaddlabel((25, 25), "C", 5);
 gdaddlabel((50, 25), "D", 2);
 gdaddlabel((25, 0), "E", 4);
 
+% five node example:
+gdadd("5node_2roots");
+gdaddvert((0, 0), 1);
+gdaddvert((0, 50), 0);
+gdaddvert((25, 75), 1);
+gdaddvert((50, 50), 0);
+gdaddvert((50, 0), 0);
+
+% all of r1's edges
+gdaddlabel((0, 0), "r1", 4);
+gdaddedge(0, 1);
+gdaddedge(0, 2);
+gdaddedgecurv(0, 3, 0.05);
+gdaddedge(0, 4);
+
+gdaddlabel((0, 50), "s1", 5);
+
+% all of r2's edges
+gdaddlabel((25, 75), "r2", 1);
+gdaddedge(2, 1);
+gdaddedge(2, 3);
+
+% all of s2's edges
+gdaddlabel((50, 50), "s2", 2);
+gdaddedge(3, 4);
+
+% all of s3's edges
+gdaddlabel((50, 0), "s3", 7);
+gdaddedgecurv(4, 1, -0.05);
+gdaddedge(4, 2);
+
 % ** drawing the figures and output ********************************************
 
 gdN := gd;
