@@ -213,6 +213,46 @@ gdaddlabel((50, 0), "s3", 7);
 gdaddedgecurv(4, 1, -0.05);
 gdaddedge(4, 2);
 
+% j1-j2 difference example
+gdadd("5node_2roots_j1_j2_diff");
+
+gdaddvert((0, 0), 1);
+gdaddvert((0, 50), 0);
+gdaddvert((25, 75), 0);
+gdaddvert((50, 50), 0);
+gdaddvert((50, 0), 1);
+
+% all of r1's edges
+gdaddlabel((0, 0), "r1", 4);
+gdaddedge(0, 1);
+gdaddlabel((0, 25), "A", 0);
+
+% all of s1's edges
+gdaddlabel((0, 50), "s1", 0);
+gdaddedgecurv(1, 2, 0.15);
+gdaddlabel((12.5, 70), "H", 5);
+gdaddedge(1, 3);
+gdaddlabel((25, 50), "D", 4);
+
+% all of s3's edges
+gdaddlabel((25, 75), "s3", 1);
+gdaddedgecurv(2, 1, 0.15);
+gdaddlabel((12.5, 55), "G", 1);
+gdaddedgecurv(2, 3, 0.15);
+gdaddlabel((37.5, 70), "F", 6);
+
+% all of s2's edges
+gdaddlabel((50, 50), "s2", 2);
+gdaddedgecurv(3, 2, 0.15);
+gdaddlabel((35.5, 55), "E", 6);
+gdaddedgecurv(3, 1, 0.25);
+gdaddlabel((25, 35), "C", 3);
+
+% all of r2's edges
+gdaddlabel((50, 0), "r2", 7);
+gdaddedge(4, 3);
+gdaddlabel((50, 25), "B", 2);
+
 % ** drawing the figures and output ********************************************
 
 gdN := gd;

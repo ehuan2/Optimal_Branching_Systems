@@ -4,11 +4,11 @@ all: build toPdf
 build:
 		mpost ${title}.mp
 
-toPdfTitle=fig_Gadget4node_2roots_simple fig_Gadget5node_2roots
+toPdfTitle=4node_2roots_simple 5node_2roots 5node_2roots_j1_j2_diff
 
 toPdf:
 	for file in ${toPdfTitle} ; do \
-		epstopdf $$file.eps ; \
+		epstopdf fig_Gadget$$file.eps ; \
 	done
 
 .PHONY: clean
