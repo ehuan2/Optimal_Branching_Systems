@@ -253,6 +253,49 @@ gdaddlabel((50, 0), "r2", 7);
 gdaddedge(4, 3);
 gdaddlabel((50, 25), "B", 2);
 
+gdadd("3node_1root");
+
+gdaddvert((0, 0), 1);
+gdaddvert((50, 0), 0);
+gdaddvert((25, 50), 0);
+
+% all of r's edges
+gdaddlabel((0, 0), "r", 4);
+gdaddedge(0, 1);
+gdaddlabel((25, 0), "-3", 3);
+gdaddedge(0, 2);
+gdaddlabel((12.5, 25), "1", 5);
+
+% s1
+gdaddlabel((25, 50), "s1", 1);
+gdaddedge(2, 1);
+gdaddlabel((37.5, 25), "2", 6); 
+
+% s2
+gdaddlabel((50, 0), "s2", 7);
+
+gdadd("3node_2roots");
+
+gdaddvert((0, 0), 1);
+gdaddvert((50, 0), 1);
+gdaddvert((25, 50), 0);
+
+% all of r's edges
+gdaddlabel((0, 0), "r", 4);
+gdaddedge(0, 1);
+gdaddlabel((25, 0), "C", 3);
+gdaddedge(0, 2);
+gdaddlabel((12.5, 25), "A", 5);
+
+% s1
+gdaddlabel((25, 50), "s1", 1);
+gdaddedge(2, 1);
+gdaddlabel((37.5, 25), "B", 6); 
+
+% r2
+gdaddlabel((50, 0), "r2", 7);
+
+
 % ** drawing the figures and output ********************************************
 
 gdN := gd;
