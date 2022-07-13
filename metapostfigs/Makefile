@@ -2,16 +2,16 @@
 title=ObsGraphs
 all: build toPdf
 build:
-		mpost ${title}.mp
+	mpost ${title}.mp
 
-toPdfTitle=4node_2roots_simple 5node_2roots 5node_2roots_j1_j2_diff 3node_1root 3node_2roots
+toPdfTitle=4node_2roots_simple 5node_2roots 5node_2roots_k3_minor 3node_1root 3node_2roots
 
 toPdf:
 	for file in ${toPdfTitle} ; do \
-		epstopdf fig_Gadget$$file.eps ; \
+		epstopdf fig_$$file.eps ; \
 	done
 
 .PHONY: clean
 
 clean:
-	rm $$file/*.pdf
+	rm *.pdf *.eps

@@ -1,31 +1,23 @@
+% Edit: July 2022, Eric Huang
+% Excerpt taken from GadgetGraphs.mp
 % GadgetGraphs.mp -- drawing the graphs of gadgets.
+% Szilárd Szalay, Wigner Research Centre for Physics, Budapest.
 %
 % compiling:
-% simple compiling: 
-%     mpost GadgetGraphs.mp
-% if there are LaTeX labels:
-%     TEX=pdflatex mpost GadgetGraphs.mp
-% The script a2ping is for converting .eps figures to .pdf figures,
-% while not screwing up the bounding box.
-% It gives an error message, but it works fine...
-% One can use the bash script for multiple conversions:
-%     for f in fig_Gadget*.eps; do ./a2ping.pl $f; done
-%     << or >>
-%     for f in fig_Gadget*.eps; do epspdf $f; done
+% use the make file (execute make)
 
-% ** declarations for metaposting **********************************************
 input mparrows;
 setarrows(barbedsharp);
 prologues := 3;	% needed if there are LaTeX labels and also for converting to pdf
 
 % for writing out the indices:
 numeric showindices;
-showindices := 0;       % hide the indices
-%showindices := 1;      % show the indices
+%showindices := 0;       % hide the indices
+showindices := 1;      % show the indices
 
 if showindices=1:
         input TEX;
-        TEXPRE("%&latex" & char(10) & "\documentclass{article}\begin{document}");
+        TEXPRE("%&latex" & char(10) & "\documentclass{article}\usepackage{xcolor}\begin{document}");
         TEXPOST("\end{document}");
 fi;
 
@@ -36,7 +28,7 @@ fi;
 numeric ut; ut := 30bp; 
 
 %numeric dt; dt := .2ut;			% size of a vertex
-numeric dt; dt := .10ut;		% size of a vertex
+numeric dt; dt := .20ut;		% size of a vertex
 numeric it; it := 1.5bp; % 0.7bp	% width of an edge
 
 % ** drawing routines **********************************************************
@@ -59,32 +51,39 @@ vardef grlabel(expr A, labelName, pos)=
 	% 0 for left, 1 for top, 2 for right, 3 for bottom
 	% 4 for left bottom, 5 for left top, 6 for right top, 7 for left bottom
 	if pos = 0:
-		label.lft(labelName, A);
+		label.lft(TEX(labelName), A);
 	elseif pos = 1:
-		label.top(labelName, A);
+		label.top(TEX(labelName), A);
 	elseif pos = 2:
-		label.rt(labelName, A);
+		label.rt(TEX(labelName), A);
 	elseif pos = 3:
-		label.bot(labelName, A);
+		label.bot(TEX(labelName), A);
 	elseif pos = 4:
-		label.llft(labelName, A);
+		label.llft(TEX(labelName), A);
 	elseif pos = 5:
-		label.ulft(labelName, A);
+		label.ulft(TEX(labelName), A);
 	elseif pos = 6:
-		label.urt(labelName, A);
+		label.urt(TEX(labelName), A);
 	elseif pos = 7:
-		label.lrt(labelName, A);
+		label.lrt(TEX(labelName), A);
 	fi;
 enddef;
 
 % default edge for the graph
-vardef gredge(expr A,B,s) =
-pair C, D, E;
-	C := 0.3[A,B]+s*((B-A) rotated 90);
-	D := 0.5[A,B]+1.13s*((B - A) rotated 90);
-        drawarrow A..C..D;
-				draw A..C..B;
-        %draw A..C..B withpen pencircle scaled it withcolor black;
+vardef gredge(expr A,B,s,multi,offset) =
+	pair C, D, E;
+
+	if multi = 0:
+		C := 0.3[A,B]+s*((B-A) rotated 90);
+		D := 0.5[A,B]+1.13s*((B - A) rotated 90);
+	else:
+		C := 0.3[A,B] + offset;
+		D := multi[A,B] + offset;
+	fi;
+	
+	drawarrow (A + offset)..C..D;
+	draw (A + offset)..C..(B + offset);
+	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;
 enddef;
 
@@ -103,7 +102,9 @@ pair gdvert[][];
 numeric gdverttype[][];		% 0: data, 1: aux
 
 numeric gdedge[][][];
-numeric gdedgeh[][];		% 0: straight, >0: curvature ("height")
+numeric gdedgeh[][][];		% 0: curvature level (0: straight, >0: curvature ("height"))
+													% 1: where to place arrowhead
+pair gdedgeoffset[][];
  
 % first is for image, second is for label number, third is to separate
 pair gdlabelpos[][];
@@ -131,7 +132,9 @@ enddef;
 def gdaddedge(expr ei,ej)=
 	gdedge[gd][ gdNedge[gd] ][0] := ei;
 	gdedge[gd][ gdNedge[gd] ][1] := ej;
-	gdedgeh[gd][ gdNedge[gd] ] := 0 ;
+	gdedgeh[gd][ gdNedge[gd] ][0] := 0 ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0) ;
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
@@ -142,13 +145,37 @@ def gdaddlabel(expr A, labelName, pos)=
 	gdNlabel[gd] := gdNlabel[gd] + 1;
 enddef;
 
+def gdaddedgelabel(expr A, labelName, pos)=
+	gdlabelpos[gd][gdNlabel[gd]] := A;
+	gdlabelName[gd][gdNlabel[gd]] := "\color{blue}" & labelName;
+	gdlabel[gd][gdNlabel[gd]] := pos;
+	gdNlabel[gd] := gdNlabel[gd] + 1;
+enddef;
+
+def gdaddvertexlabel(expr A, labelName, pos)=
+	gdlabelpos[gd][gdNlabel[gd]] := A;
+	gdlabelName[gd][gdNlabel[gd]] := "\color{green}" & labelName;
+	gdlabel[gd][gdNlabel[gd]] := pos;
+	gdNlabel[gd] := gdNlabel[gd] + 1;
+enddef;
+
 def gdaddedgecurv(expr ei,ej,s)=
 	gdedge[gd][ gdNedge[gd] ][0] := ei;
 	gdedge[gd][ gdNedge[gd] ][1] := ej;
-	gdedgeh[gd][ gdNedge[gd] ] := s ;
+	gdedgeh[gd][ gdNedge[gd] ][0] := s ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0) ;
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
+def gdaddedgemulti(expr ei,ej,placement,offset)=
+	gdedge[gd][ gdNedge[gd] ][0] := ei;
+	gdedge[gd][ gdNedge[gd] ][1] := ej;
+	gdedgeh[gd][ gdNedge[gd] ][0] := 0 ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := placement ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := offset ;
+	gdNedge[gd] := gdNedge[gd]+1;
+enddef;
 
 pair post[];
 post[0] := ut*dir(90)/sqrt(2);
@@ -170,17 +197,17 @@ gdaddedge(1, 2);
 gdaddedge(2, 0);
 gdaddedge(3, 0);
 gdaddedgecurv(3, 2, 0);
-gdaddlabel((0, 0), "s1", 0);
-gdaddlabel((0, 50), "r2", 0);
-gdaddlabel((50, 0), "r1", 2);
-gdaddlabel((50, 50), "s2", 2);
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_2$", 0);
+gdaddvertexlabel((50, 0), "$r_1$", 2);
+gdaddvertexlabel((50, 50), "$s_2$", 2);
 
 % edge labels:
-gdaddlabel((25, 50), "A", 1);
-gdaddlabel((0, 25), "B", 0);
-gdaddlabel((25, 25), "C", 5);
-gdaddlabel((50, 25), "D", 2);
-gdaddlabel((25, 0), "E", 4);
+gdaddedgelabel((25, 50), "A", 1);
+gdaddedgelabel((0, 25), "B", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((50, 25), "D", 2);
+gdaddedgelabel((25, 0), "E", 4);
 
 % five node example:
 gdadd("5node_2roots");
@@ -191,67 +218,67 @@ gdaddvert((50, 50), 0);
 gdaddvert((50, 0), 0);
 
 % all of r1's edges
-gdaddlabel((0, 0), "r1", 4);
+gdaddvertexlabel((0, 0), "$r_1$", 4);
 gdaddedge(0, 1);
 gdaddedge(0, 2);
 gdaddedgecurv(0, 3, 0.05);
 gdaddedge(0, 4);
 
-gdaddlabel((0, 50), "s1", 5);
+gdaddvertexlabel((0, 50), "$s_1$", 5);
 
 % all of r2's edges
-gdaddlabel((25, 75), "r2", 1);
+gdaddvertexlabel((25, 75), "$r_2$", 1);
 gdaddedge(2, 1);
 gdaddedge(2, 3);
 
 % all of s2's edges
-gdaddlabel((50, 50), "s2", 2);
+gdaddvertexlabel((50, 50), "$s_2$", 2);
 gdaddedge(3, 4);
 
 % all of s3's edges
-gdaddlabel((50, 0), "s3", 7);
+gdaddvertexlabel((50, 0), "$s_3$", 7);
 gdaddedgecurv(4, 1, -0.05);
 gdaddedge(4, 2);
 
 % j1-j2 difference example
-gdadd("5node_2roots_j1_j2_diff");
+gdadd("5node_2roots_k3_minor");
 
 gdaddvert((0, 0), 1);
 gdaddvert((0, 50), 0);
-gdaddvert((25, 75), 0);
-gdaddvert((50, 50), 0);
-gdaddvert((50, 0), 1);
+gdaddvert((37.5, 100), 0);
+gdaddvert((75, 50), 0);
+gdaddvert((75, 0), 1);
 
 % all of r1's edges
-gdaddlabel((0, 0), "r1", 4);
+gdaddvertexlabel((0, 0), "$r_1$", 4);
 gdaddedge(0, 1);
-gdaddlabel((0, 25), "A", 0);
+gdaddedgelabel((0, 25), "A", 0);
 
 % all of s1's edges
-gdaddlabel((0, 50), "s1", 0);
-gdaddedgecurv(1, 2, 0.15);
-gdaddlabel((12.5, 70), "H", 5);
-gdaddedge(1, 3);
-gdaddlabel((25, 50), "D", 4);
+gdaddvertexlabel((0, 50), "$s_1$", 0);
+gdaddedgemulti(1, 2, 0.7, (-1, 1));
+gdaddedgelabel((15.5, 75), "H", 5);
+gdaddedgemulti(1, 3, 0.7, (0, 1));
+gdaddedgelabel((37.5, 50), "D", 1);
 
 % all of s3's edges
-gdaddlabel((25, 75), "s3", 1);
-gdaddedgecurv(2, 1, 0.15);
-gdaddlabel((12.5, 55), "G", 1);
-gdaddedgecurv(2, 3, 0.15);
-gdaddlabel((37.5, 70), "F", 6);
+gdaddvertexlabel((37.5, 100), "$s_3$", 1);
+gdaddedgemulti(2, 1, 0.7, (1, -1));
+gdaddedgelabel((25, 60), "G", 1);
+gdaddedgemulti(2, 3, 0.7, (1, 1));
+gdaddedgelabel((59.5, 75), "F", 6);
 
 % all of s2's edges
-gdaddlabel((50, 50), "s2", 2);
-gdaddedgecurv(3, 2, 0.15);
-gdaddlabel((35.5, 55), "E", 6);
-gdaddedgecurv(3, 1, 0.25);
-gdaddlabel((25, 35), "C", 3);
+gdaddvertexlabel((75, 50), "$s_2$", 2);
+gdaddedgemulti(3, 2, 0.7, (-1, -1));
+gdaddedgelabel((45.5, 60), "E", 6);
+gdaddedgemulti(3, 1, 0.7, (0, -1));
+gdaddedgelabel((37.5, 47.5), "C", 3);
 
 % all of r2's edges
-gdaddlabel((50, 0), "r2", 7);
+gdaddvertexlabel((75, 0), "$r_2$", 7);
 gdaddedge(4, 3);
-gdaddlabel((50, 25), "B", 2);
+gdaddedgelabel((75, 25), "B", 2);
 
 gdadd("3node_1root");
 
@@ -260,19 +287,19 @@ gdaddvert((50, 0), 0);
 gdaddvert((25, 50), 0);
 
 % all of r's edges
-gdaddlabel((0, 0), "r", 4);
+gdaddvertexlabel((0, 0), "r", 4);
 gdaddedge(0, 1);
-gdaddlabel((25, 0), "-3", 3);
+gdaddedgelabel((25, 0), "-3", 3);
 gdaddedge(0, 2);
-gdaddlabel((12.5, 25), "1", 5);
+gdaddedgelabel((12.5, 25), "1", 5);
 
 % s1
-gdaddlabel((25, 50), "s1", 1);
+gdaddvertexlabel((25, 50), "$s_1$", 1);
 gdaddedge(2, 1);
-gdaddlabel((37.5, 25), "2", 6); 
+gdaddedgelabel((37.5, 25), "2", 6); 
 
 % s2
-gdaddlabel((50, 0), "s2", 7);
+gdaddedgelabel((50, 0), "$s_2$", 7);
 
 gdadd("3node_2roots");
 
@@ -281,19 +308,19 @@ gdaddvert((50, 0), 1);
 gdaddvert((25, 50), 0);
 
 % all of r's edges
-gdaddlabel((0, 0), "r", 4);
+gdaddvertexlabel((0, 0), "r", 4);
 gdaddedge(0, 1);
-gdaddlabel((25, 0), "C", 3);
+gdaddedgelabel((25, 0), "C", 3);
 gdaddedge(0, 2);
-gdaddlabel((12.5, 25), "A", 5);
+gdaddedgelabel((12.5, 25), "A", 5);
 
 % s1
-gdaddlabel((25, 50), "s1", 1);
+gdaddvertexlabel((25, 50), "$s_1$", 1);
 gdaddedge(2, 1);
-gdaddlabel((37.5, 25), "B", 6); 
+gdaddedgelabel((37.5, 25), "B", 6); 
 
 % r2
-gdaddlabel((50, 0), "r2", 7);
+gdaddvertexlabel((50, 0), "$r_2$", 7);
 
 
 % ** drawing the figures and output ********************************************
@@ -303,7 +330,7 @@ gdN := gd;
 for gd = 1 upto gdN:
 gadget[gd]:= image(
 	for ie = 0 upto gdNedge[gd]-1:
-		gredge( gdvert[gd][gdedge[gd][ie][0]], gdvert[gd][gdedge[gd][ie][1]], gdedgeh[gd][ie]  );
+		gredge( gdvert[gd][gdedge[gd][ie][0]], gdvert[gd][gdedge[gd][ie][1]], gdedgeh[gd][ie][0], gdedgeh[gd][ie][1], gdedgeoffset[gd][ie]  );
 	endfor;
 	for iv = 0 upto gdNvert[gd]-1:
 		if gdverttype[gd][iv] = 0:
@@ -311,7 +338,8 @@ gadget[gd]:= image(
 		elseif gdverttype[gd][iv] = 1:
 			grvertexaux(gdvert[gd][iv]);
 		fi;
-		if showindices=1: label.urt(TEX("\tiny $"&decimal(iv)&"$"), gdvert[gd][iv] ); fi;
+		% uncomment to programmatically add in vertex numbers
+		% if showindices=1: label.urt(TEX("\tiny $"&decimal(iv)&"$"), gdvert[gd][iv] ); fi;
 	endfor;
 	for il = 0 upto gdNlabel[gd]-1:
 		grlabel(gdlabelpos[gd][il], gdlabelName[gd][il], gdlabel[gd][il]);
@@ -322,7 +350,7 @@ endfor;
 
 for gd = 1 upto gdN:
 	show gdlabel[gd];
-	outputtemplate := "fig_Gadget"&gdlabel[gd]&".eps";
+	outputtemplate := "fig_"&gdlabel[gd]&".eps";
 	beginfig(0) draw gadget[gd]; endfig;
 endfor;
 
