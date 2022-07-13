@@ -299,7 +299,7 @@ gdaddedge(2, 1);
 gdaddedgelabel((37.5, 25), "2", 6); 
 
 % s2
-gdaddedgelabel((50, 0), "$s_2$", 7);
+gdaddvertexlabel((50, 0), "$s_2$", 7);
 
 gdadd("3node_2roots");
 
