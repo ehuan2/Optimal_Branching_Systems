@@ -208,10 +208,10 @@ gdaddvertexlabel((50, 0), "$r_1$", 2);
 gdaddvertexlabel((50, 50), "$s_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 50), "A", 1);
-gdaddedgelabel((0, 25), "B", 0);
-gdaddedgelabel((25, 25), "C", 5);
-gdaddedgelabel((50, 25), "D", 2);
+gdaddedgelabel((25, 50), "B", 1);
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "D", 5);
+gdaddedgelabel((50, 25), "C", 2);
 gdaddedgelabel((25, 0), "E", 3);
 
 % four node 1 root example:
@@ -231,10 +231,10 @@ gdaddvertexlabel((50, 0), "$r_1$", 2);
 gdaddvertexlabel((50, 50), "$s_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 50), "A", 1);
-gdaddedgelabel((0, 25), "B", 0);
-gdaddedgelabel((25, 25), "C", 5);
-gdaddedgelabel((50, 25), "D", 2);
+gdaddedgelabel((25, 50), "B", 1);
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "D", 5);
+gdaddedgelabel((50, 25), "C", 2);
 gdaddedgelabel((25, 0), "E", 3);
 
 % five node example:
