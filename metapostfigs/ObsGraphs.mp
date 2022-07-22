@@ -331,11 +331,11 @@ for i = 0 upto 2:
 endfor;
 
 % all of r's edges
-gdaddedge(0, 1);
-gdaddedge(0, 2);
+gdaddedgemulti(0, 1, 0.55, (0, 0));
+gdaddedgemulti(0, 2, 0.55, (0, 0));
 
 % s1
-gdaddedge(2, 1);
+gdaddedgemulti(1, 2, 0.55, (0, 0));
 
 gdaddedgelabel(ut/2*dir(135), "A", 5);
 gdaddedgelabel(ut/2*dir(45), "B", 6); 
@@ -354,11 +354,11 @@ for i = 0 upto 2:
 endfor;
 
 % all of r's edges
-gdaddedge(0, 1);
-gdaddedge(0, 2);
+gdaddedgemulti(0, 1, 0.55, (0, 0));
+gdaddedgemulti(0, 2, 0.55, (0, 0));
 
 % s1
-gdaddedge(2, 1);
+gdaddedgemulti(1, 2, 0.55, (0, 0));
 
 gdaddedgelabel(ut/2*dir(135), "A", 5);
 gdaddedgelabel(ut/2*dir(45), "B", 6); 
