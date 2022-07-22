@@ -353,6 +353,28 @@ gdaddedgelabel((25, 0), "E", 1);
 gdaddedgelabel((25, -7.5), "F", 3);
 gdaddedgelabel((57.5, 25), "G", 2);
 
+% four node example:
+gdadd("4node_2roots_j1");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 2);
+
+gdaddedgecurv(3, 0, 0.15);
+gdaddedgecurv(2, 3, 0.15);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((25, 25), "D", 5);
+gdaddedgelabel((25, 0), "E", 1);
+gdaddedgelabel((25, -7.5), "F", 3);
+gdaddedgelabel((57.5, 25), "G", 2);
 
 
 % ** drawing the figures and output ********************************************
