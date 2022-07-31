@@ -70,8 +70,10 @@ vardef grlabel(expr A, labelName, pos)=
 enddef;
 
 % default edge for the graph
-vardef gredge(expr A,B,s,multi,offset,color) =
+vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	pair C, D, E;
+
+	color purple; purple := (1.35, .14, 2.4);
 
 	if multi = 0:
 		if s = 0:
@@ -86,15 +88,15 @@ vardef gredge(expr A,B,s,multi,offset,color) =
 		D := multi[A,B] + offset;
 	fi;
 	
-	if color = 0:
+	if colorSelect = 0:
 		drawarrow (A + offset)..C..D;
 		draw (A + offset)..C..(B + offset);
-	elseif color = 1:
+	elseif colorSelect = 1:
 		drawarrow (A + offset)..C..D withcolor blue;
 		draw (A + offset)..C..(B + offset) withcolor blue;
 	else:
-		drawarrow (A + offset)..C..D withcolor red;
-		draw (A + offset)..C..(B + offset) withcolor red;
+		drawarrow (A + offset)..C..D withcolor purple;
+		draw (A + offset)..C..(B + offset) withcolor purple;
 	fi;
 	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;

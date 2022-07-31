@@ -239,20 +239,20 @@ gdaddedgelabel((25, 0), "E", 3);
 
 % five node example:
 gdadd("5node_2roots");
-gdaddvert((0, 0), 1);
+gdaddvert((-12.5, 0), 1);
 gdaddvert((-12.5, 50), 0);
 gdaddvert((25, 75), 1);
 gdaddvert((62.5, 50), 0);
-gdaddvert((50, 0), 0);
+gdaddvert((62.5, 0), 0);
 
 % all of r1's edges
 gdaddvertexlabel((0, 0), "$r_1$", 4);
 gdaddedge(0, 1);
 gdaddedgelabel((-12.5, 25), "A", 4);
 gdaddedge(0, 2);
-gdaddedgelabel((15, 50), "F", 0);
+gdaddedgelabel((5, 35), "F", 0);
 gdaddedgecurv(0, 3, 0.05);
-gdaddedgelabel((10, 10), "H", 2);
+gdaddedgelabel((0, 10), "H", 2);
 gdaddedge(0, 4);
 gdaddedgelabel((25, 0), "E", 3);
 
@@ -273,9 +273,9 @@ gdaddedgelabel((62.5, 25), "D", 7);
 % all of s3's edges
 gdaddvertexlabel((50, 0), "$s_3$", 7);
 gdaddedgecurv(4, 1, -0.05);
-gdaddedgelabel((40, 10), "I", 0);
+gdaddedgelabel((50, 10), "I", 0);
 gdaddedge(4, 2);
-gdaddedgelabel((35, 50), "G", 2);
+gdaddedgelabel((45, 35), "G", 2);
 
 % j1-j2 difference example
 gdadd("5node_2roots_k3_minor");
