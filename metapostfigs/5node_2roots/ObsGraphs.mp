@@ -229,7 +229,7 @@ gdaddvertexlabel((0, 0), "$r_1$", 4);
 gdaddedge(0, 1);
 gdaddedgelabel((-12.5, 25), "A", 4);
 gdaddedge(0, 2);
-gdaddedgelabel((5, 35), "F", 0);
+gdaddedgelabel((13.5, 55), "F", 2);
 gdaddedgecurv(0, 3, 0.05);
 gdaddedgelabel((0, 10), "H", 2);
 gdaddedge(0, 4);
@@ -254,7 +254,7 @@ gdaddvertexlabel((50, 0), "$s_3$", 7);
 gdaddedgecurv(4, 1, -0.05);
 gdaddedgelabel((50, 10), "I", 0);
 gdaddedge(4, 2);
-gdaddedgelabel((45, 35), "G", 2);
+gdaddedgelabel((36.5, 55), "G", 0);
 
 % five node example:
 gdadd("5node_2roots_b1");
