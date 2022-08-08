@@ -74,6 +74,7 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	pair C, D, E;
 
 	color purple; purple := (1.35, .14, 2.4);
+	color orange; orange := (1.45, 0.64, 0.05);
 
 	if multi = 0:
 		if s = 0:
@@ -94,14 +95,18 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	elseif colorSelect = 1:
 		drawarrow (A + offset)..C..D withcolor blue;
 		draw (A + offset)..C..(B + offset) withcolor blue;
-	else:
+	elseif colorSelect = 2:
 		drawarrow (A + offset)..C..D withcolor purple;
 		draw (A + offset)..C..(B + offset) withcolor purple;
+	elseif colorSelect = 3:
+		drawarrow (A + offset)..C..D withcolor orange;
+		draw (A + offset)..C..(B + offset) withcolor orange;
 	fi;
 	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;
 enddef;
-
+ 
+ 
 % ** gadget definitions ********************************************************
 
 picture gadget[];
@@ -269,13 +274,13 @@ gdaddvert(ut*dir(210) + (-ut, 0), 1);
 gdaddvert(ut*dir(210) + (0, -ut), 1);
 
 % all of r's edges
-gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
+gdaddedgemulti(0, 1, 0.55, (0, 0), 2);
 
 % s1
-gdaddedgemulti(1, 2, 0.55, (0, 0), 0);
+gdaddedgemulti(1, 2, 0.55, (0, 0), 2);
 
-gdaddedgemulti(3, 0, 0.55, (0, 0), 0);
-gdaddedgemulti(4, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(3, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(4, 0, 0.55, (0, 0), 3);
 gdaddvertexlabel(ut*dir(210) + (-ut, 0), "$r_1$", 0);
 gdaddvertexlabel(ut*dir(210) + (0, -ut), "$r_2$", 3);
 
