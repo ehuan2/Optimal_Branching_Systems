@@ -70,8 +70,10 @@ vardef grlabel(expr A, labelName, pos)=
 enddef;
 
 % default edge for the graph
-vardef gredge(expr A,B,s,multi,offset) =
+vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	pair C, D, E;
+
+	color purple; purple := (1.35, .14, 2.4);
 
 	if multi = 0:
 		if s = 0:
@@ -86,8 +88,16 @@ vardef gredge(expr A,B,s,multi,offset) =
 		D := multi[A,B] + offset;
 	fi;
 	
-	drawarrow (A + offset)..C..D;
-	draw (A + offset)..C..(B + offset);
+	if colorSelect = 0:
+		drawarrow (A + offset)..C..D;
+		draw (A + offset)..C..(B + offset);
+	elseif colorSelect = 1:
+		drawarrow (A + offset)..C..D withcolor blue;
+		draw (A + offset)..C..(B + offset) withcolor blue;
+	else:
+		drawarrow (A + offset)..C..D withcolor purple;
+		draw (A + offset)..C..(B + offset) withcolor purple;
+	fi;
 	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;
 enddef;
@@ -110,6 +120,7 @@ numeric gdedge[][][];
 numeric gdedgeh[][][];		% 0: curvature level (0: straight, >0: curvature ("height"))
 													% 1: where to place arrowhead
 pair gdedgeoffset[][];
+numeric gdedgecolor[][];
  
 % first is for image, second is for label number, third is to separate
 pair gdlabelpos[][];
@@ -140,6 +151,7 @@ def gdaddedge(expr ei,ej)=
 	gdedgeh[gd][ gdNedge[gd] ][0] := 0 ;
 	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
 	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0) ;
+	gdedgecolor[gd][ gdNedge[gd] ] := 0;
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
@@ -170,15 +182,28 @@ def gdaddedgecurv(expr ei,ej,s)=
 	gdedgeh[gd][ gdNedge[gd] ][0] := s ;
 	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
 	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0) ;
+	gdedgecolor[gd][ gdNedge[gd] ] := 0;
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
-def gdaddedgemulti(expr ei,ej,placement,offset)=
+def gdaddedgecurvcolor(expr ei, ej, s, color)=
+	gdedge[gd][ gdNedge[gd] ][0] := ei;
+	gdedge[gd][ gdNedge[gd] ][1] := ej;
+	gdedgeh[gd][ gdNedge[gd] ][0] := s ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0);
+	gdedgecolor[gd][ gdNedge[gd] ] := color;
+	gdNedge[gd] := gdNedge[gd]+1;
+enddef;	
+
+% color: black = 0, blue = 1, red = 2
+def gdaddedgemulti(expr ei,ej,placement,offset,color)=
 	gdedge[gd][ gdNedge[gd] ][0] := ei;
 	gdedge[gd][ gdNedge[gd] ][1] := ej;
 	gdedgeh[gd][ gdNedge[gd] ][0] := 0 ;
 	gdedgeh[gd][ gdNedge[gd] ][1] := placement ;
 	gdedgeoffset[gd][ gdNedge[gd] ] := offset ;
+	gdedgecolor[gd][ gdNedge[gd] ] := color;
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
@@ -191,207 +216,112 @@ pair centralt; centralt:=(post[0]+post[1]+post[2])/3;
 %centralt:=(0,-ut*2/sqrt(2)/6);
 %centralt:=(0,0);
 
-% four node example:
-gdadd("4node_2roots_simple");
-gdaddvert((0, 0), 0);
-gdaddvert((0, 50), 1);
-gdaddvert((50, 50), 0);
-gdaddvert((50, 0), 1);
-gdaddedgemulti(0, 1, 0.55, (0, 0));
-gdaddedgemulti(1, 2, 0.55, (0, 0));
-gdaddedgemulti(2, 0, 0.55, (0, 0));
-gdaddedgemulti(3, 0, 0.55, (0, 0));
-gdaddedgecurv(3, 2, 0);
-gdaddvertexlabel((0, 0), "$s_1$", 0);
-gdaddvertexlabel((0, 50), "$r_2$", 0);
-gdaddvertexlabel((50, 0), "$r_1$", 2);
-gdaddvertexlabel((50, 50), "$s_2$", 2);
-
-% edge labels:
-gdaddedgelabel((25, 50), "B", 1);
-gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((50, 25), "C", 2);
-gdaddedgelabel((25, 0), "E", 3);
-
-% four node 1 root example:
-gdadd("4node_1root_simple");
-gdaddvert((0, 0), 0);
-gdaddvert((0, 50), 0);
-gdaddvert((50, 50), 0);
-gdaddvert((50, 0), 1);
-gdaddedgemulti(0, 1, 0.55, (0, 0));
-gdaddedgemulti(1, 2, 0.55, (0, 0));
-gdaddedgemulti(2, 0, 0.55, (0, 0));
-gdaddedgemulti(3, 0, 0.55, (0, 0));
-gdaddedgecurv(3, 2, 0);
-gdaddvertexlabel((0, 0), "$s_1$", 0);
-gdaddvertexlabel((0, 50), "$s_3$", 0);
-gdaddvertexlabel((50, 0), "$r_1$", 2);
-gdaddvertexlabel((50, 50), "$s_2$", 2);
-
-% edge labels:
-gdaddedgelabel((25, 50), "B", 1);
-gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((50, 25), "C", 2);
-gdaddedgelabel((25, 0), "E", 3);
-
-% five node example:
-gdadd("5node_2roots");
-gdaddvert((-12.5, 0), 1);
-gdaddvert((-12.5, 50), 0);
-gdaddvert((25, 75), 1);
-gdaddvert((62.5, 50), 0);
-gdaddvert((62.5, 0), 0);
-
-% all of r1's edges
-gdaddvertexlabel((0, 0), "$r_1$", 4);
-gdaddedge(0, 1);
-gdaddedgelabel((-12.5, 25), "A", 4);
-gdaddedge(0, 2);
-gdaddedgelabel((5, 35), "F", 0);
-gdaddedgecurv(0, 3, 0.05);
-gdaddedgelabel((0, 10), "H", 2);
-gdaddedge(0, 4);
-gdaddedgelabel((25, 0), "E", 3);
-
-gdaddvertexlabel((-12.5, 50), "$s_1$", 5);
-
-% all of r2's edges
-gdaddvertexlabel((25, 75), "$r_2$", 1);
-gdaddedge(2, 1);
-gdaddedgelabel((5, 62.5), "B", 5);
-gdaddedge(2, 3);
-gdaddedgelabel((55, 62.5), "C", 5);
-
-% all of s2's edges
-gdaddvertexlabel((62.5, 50), "$s_2$", 2);
-gdaddedge(3, 4);
-gdaddedgelabel((62.5, 25), "D", 7);
-
-% all of s3's edges
-gdaddvertexlabel((50, 0), "$s_3$", 7);
-gdaddedgecurv(4, 1, -0.05);
-gdaddedgelabel((50, 10), "I", 0);
-gdaddedge(4, 2);
-gdaddedgelabel((45, 35), "G", 2);
-
-% j1-j2 difference example
-gdadd("5node_2roots_k3_minor");
-
-gdaddvert((0, 0), 1);
-gdaddvert((0, 50), 0);
-gdaddvert((37.5, 100), 0);
-gdaddvert((75, 50), 0);
-gdaddvert((75, 0), 1);
-
-% all of r1's edges
-gdaddvertexlabel((0, 0), "$r_1$", 4);
-gdaddedge(0, 1);
-gdaddedgelabel((0, 25), "A", 0);
-
-% all of s1's edges
-gdaddvertexlabel((0, 50), "$s_1$", 0);
-gdaddedgemulti(1, 2, 0.7, (-1, 1));
-gdaddedgelabel((15.5, 75), "H", 5);
-gdaddedgemulti(1, 3, 0.7, (0, 1.4));
-gdaddedgelabel((37.5, 50), "D", 1);
-
-% all of s3's edges
-gdaddvertexlabel((37.5, 100), "$s_3$", 1);
-gdaddedgemulti(2, 1, 0.7, (1, -1));
-gdaddedgelabel((25, 60), "G", 1);
-gdaddedgemulti(2, 3, 0.7, (1, 1));
-gdaddedgelabel((59.5, 75), "F", 6);
-
-% all of s2's edges
-gdaddvertexlabel((75, 50), "$s_2$", 2);
-gdaddedgemulti(3, 2, 0.7, (-1, -1));
-gdaddedgelabel((50, 60), "E", 1);
-gdaddedgemulti(3, 1, 0.7, (0, -1.4));
-gdaddedgelabel((37.5, 47.5), "C", 3);
-
-% all of r2's edges
-gdaddvertexlabel((75, 0), "$r_2$", 7);
-gdaddedge(4, 3);
-gdaddedgelabel((75, 25), "B", 2);
-
-gdadd("3node_1root");
+% 5node_2roots fish
+gdadd("5node_2roots_j1_fish");
 
 for i = 0 upto 2:
+	gdaddvert(ut*dir(-i*360/3+210),0);
 	if i = 0:
-		gdaddvert(ut*dir(-i*360/3+210),1);
-	else:
-		gdaddvert(ut*dir(-i*360/3+210),0);
-	fi;
-	if i = 0:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$r$", 4);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_1$", 4);
 	elseif i = 1:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_1$", 1);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_2$", 1);
 	else:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_2$", 7);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_3$", 7);
 	fi;
 endfor;
 
+gdaddvert(ut*dir(210) + (-ut, 0), 1);
+gdaddvert(ut*dir(210) + (0, -ut), 1);
+
 % all of r's edges
-gdaddedgemulti(0, 1, 0.55, (0, 0));
-gdaddedgemulti(0, 2, 0.55, (0, 0));
+gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
 
 % s1
-gdaddedgemulti(1, 2, 0.55, (0, 0));
+gdaddedgemulti(1, 2, 0.67, (-1, -1), 0);
+gdaddedgemulti(2, 1, 0.67, (1, 1), 0);
+
+gdaddedgemulti(3, 0, 0.55, (0, 0), 0);
+gdaddvertexlabel(ut*dir(210) + (-ut, 0), "$r_1$", 0);
+gdaddedgemulti(4, 0, 0.55, (0, 0), 0);
+gdaddvertexlabel(ut*dir(210) + (0, -ut), "$r_2$", 3);
+
+gdaddedgelabel(ut/2*dir(135), "A", 5);
+gdaddedgelabel(ut/2*dir(45) - (10, 10), "B", 6); 
+gdaddedgelabel(ut/2*dir(45), "C", 6); 
+gdaddedgelabel(ut*dir(210) + (-ut/2, 0), "D", 1); 
+gdaddedgelabel(ut*dir(210) + (0, -ut/2), "E", 2); 
+
+% 5node_2roots fish
+gdadd("5node_2roots_j2_fish");
+
+for i = 0 upto 2:
+	gdaddvert(ut*dir(-i*360/3+210),0);
+	if i = 0:
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_1$", 4);
+	elseif i = 1:
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_2$", 1);
+	else:
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_3$", 7);
+	fi;
+endfor;
+
+gdaddvert(ut*dir(210) + (-ut, 0), 1);
+gdaddvert(ut*dir(210) + (0, -ut), 1);
+
+% all of r's edges
+gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
+
+% s1
+gdaddedgemulti(1, 2, 0.55, (0, 0), 0);
+
+gdaddedgemulti(3, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(4, 0, 0.55, (0, 0), 0);
+gdaddvertexlabel(ut*dir(210) + (-ut, 0), "$r_1$", 0);
+gdaddvertexlabel(ut*dir(210) + (0, -ut), "$r_2$", 3);
 
 gdaddedgelabel(ut/2*dir(135), "A", 5);
 gdaddedgelabel(ut/2*dir(45), "B", 6); 
-gdaddedgelabel(ut/2*dir(-90), "C", 3);
+gdaddedgelabel(ut*dir(210) + (-ut/2, 0), "D", 1); 
+gdaddedgelabel(ut*dir(210) + (0, -ut/2), "E", 2); 
 
-gdadd("3node_1root_trouble");
+% 5node_2roots fish with edge
+gdadd("5node_2roots_fish_extra_edge");
 
 for i = 0 upto 2:
+	gdaddvert(ut*dir(-i*360/3+210),0);
 	if i = 0:
-		gdaddvert(ut*dir(-i*360/3+210),1);
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$r$", 4);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_1$", 2);
 	elseif i = 1:
-		gdaddvert(ut*dir(-i*360/3+210),0);
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_1$", 1);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_2$", 1);
 	else:
-		gdaddvert(ut*dir(-i*360/3+210),1);
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$r_2$", 7);
+		gdaddvertexlabel(ut*dir(-i*360/3+210), "$s_3$", 7);
 	fi;
 endfor;
 
-% all of r's edges
-gdaddedgemulti(0, 1, 0.55, (0, 0));
-
-gdaddedgelabel(ut/2*dir(135), "A", 5);
-
-gdadd("3node_2roots");
-for i = 0 upto 2:
-	if i = 1:
-		gdaddvert(ut*dir(-i*360/3+210),0);
-	else:
-		gdaddvert(ut*dir(-i*360/3+210),1);
-	fi;
-	
-	if i = 0:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$r_1$", 4);
-	elseif i = 1:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$t$", 1);
-	else:
-		gdaddvertexlabel(ut*dir(-i*360/3+210), "$r_2$", 7);
-	fi;
-endfor;
+gdaddvert(ut*dir(210) + (-ut, 0), 1);
+gdaddvert(ut*dir(210) + (0, -ut), 1);
 
 % all of r's edges
-gdaddedgemulti(0, 1, 0.55, (0, 0));
-gdaddedgemulti(0, 2, 0.55, (0, 0));
+gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
 
 % s1
-gdaddedgemulti(1, 2, 0.55, (0, 0));
+gdaddedgemulti(1, 2, 0.67, (-1, -1), 0);
+gdaddedgemulti(2, 1, 0.67, (1, 1), 0);
 
-gdaddedgelabel(ut/2*dir(135), "A", 5);
-gdaddedgelabel(ut/2*dir(45), "B", 6); 
-gdaddedgelabel(ut/2*dir(-90), "C", 3);
+gdaddedgemulti(3, 0, 0.55, (0, 0), 0);
+gdaddvertexlabel(ut*dir(210) + (-ut, 0), "$r_1$", 0);
+gdaddedgemulti(4, 0, 0.55, (0, 0), 0);
+gdaddvertexlabel(ut*dir(210) + (0, -ut), "$r_2$", 3);
+
+gdaddedgemulti(3, 1, 0.55, (0, 0), 0);
+
+gdaddedgelabel(ut/2*dir(135) + (10, -10), "A", 5);
+gdaddedgelabel(ut/2*dir(45) - (10, 10), "B", 6); 
+gdaddedgelabel(ut/2*dir(45), "C", 6); 
+gdaddedgelabel(ut*dir(210) + (-ut/2, 0), "D", 3); 
+gdaddedgelabel(ut*dir(210) + (0, -ut/2), "E", 2); 
+gdaddedgelabel(ut/2*dir(135) + (-15, 0), "F", 1);
+
 
 % ** drawing the figures and output ********************************************
 
@@ -400,7 +330,7 @@ gdN := gd;
 for gd = 1 upto gdN:
 gadget[gd]:= image(
 	for ie = 0 upto gdNedge[gd]-1:
-		gredge( gdvert[gd][gdedge[gd][ie][0]], gdvert[gd][gdedge[gd][ie][1]], gdedgeh[gd][ie][0], gdedgeh[gd][ie][1], gdedgeoffset[gd][ie]  );
+		gredge( gdvert[gd][gdedge[gd][ie][0]], gdvert[gd][gdedge[gd][ie][1]], gdedgeh[gd][ie][0], gdedgeh[gd][ie][1], gdedgeoffset[gd][ie],  gdedgecolor[gd][ie]);
 	endfor;
 	for iv = 0 upto gdNvert[gd]-1:
 		if gdverttype[gd][iv] = 0:

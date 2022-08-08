@@ -1,3 +1,4 @@
 *.log
 metapostfigs/mptextmp.*
 mptextmp.*
+*.eps
