@@ -243,6 +243,78 @@ gdaddedgelabel((25, 25), "D", 5);
 gdaddedgelabel((50, 25), "C", 2);
 gdaddedgelabel((25, 0), "E", 3);
 
+% five node example:
+gdadd("5node_2roots");
+gdaddvert((-12.5, 0), 1);
+gdaddvert((-12.5, 50), 0);
+gdaddvert((25, 75), 1);
+gdaddvert((62.5, 50), 0);
+gdaddvert((62.5, 0), 0);
+
+% all of r1's edges
+gdaddvertexlabel((0, 0), "$r_1$", 4);
+gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
+gdaddedgelabel((-12.5, 25), "A", 4);
+gdaddedgecurvcolor(0, 3, 0.05, 0);
+gdaddedgelabel((0, 10), "H", 2);
+gdaddedgemulti(0, 4, 0.55, (0, 0), 0);
+gdaddedgelabel((25, 0), "E", 3);
+
+gdaddvertexlabel((-12.5, 50), "$s_1$", 5);
+
+% all of r2's edges
+gdaddvertexlabel((25, 75), "$r_2$", 1);
+gdaddedgemulti(2, 1, 0.55, (0, 0), 0);
+gdaddedgelabel((5, 62.5), "B", 5);
+gdaddedgemulti(2, 3, 0.55, (0, 0), 0);
+gdaddedgelabel((55, 62.5), "C", 5);
+
+% all of s2's edges
+gdaddvertexlabel((62.5, 50), "$s_2$", 2);
+gdaddedgemulti(3, 4, 0.55, (0, 0), 0);
+gdaddedgelabel((62.5, 25), "D", 7);
+
+% all of s3's edges
+gdaddvertexlabel((50, 0), "$s_3$", 7);
+gdaddedgecurvcolor(4, 1, -0.05, 0);
+gdaddedgelabel((50, 10), "I", 0);
+
+% five node example:
+gdadd("5node_2roots_j2");
+gdaddvert((-12.5, 0), 1);
+gdaddvert((-12.5, 50), 0);
+gdaddvert((25, 75), 1);
+gdaddvert((62.5, 50), 0);
+gdaddvert((62.5, 0), 0);
+
+% all of r1's edges
+gdaddvertexlabel((0, 0), "$r_1$", 4);
+gdaddedgemulti(0, 1, 0.55, (0, 0), 2);
+gdaddedgelabel((-12.5, 25), "A", 4);
+gdaddedgecurvcolor(0, 3, 0.05, 3);
+gdaddedgelabel((0, 10), "H", 2);
+gdaddedgemulti(0, 4, 0.55, (0, 0), 3);
+gdaddedgelabel((25, 0), "E", 3);
+
+gdaddvertexlabel((-12.5, 50), "$s_1$", 5);
+
+% all of r2's edges
+gdaddvertexlabel((25, 75), "$r_2$", 1);
+gdaddedgemulti(2, 1, 0.55, (0, 0), 2);
+gdaddedgelabel((5, 62.5), "B", 5);
+gdaddedgemulti(2, 3, 0.55, (0, 0), 3);
+gdaddedgelabel((55, 62.5), "C", 5);
+
+% all of s2's edges
+gdaddvertexlabel((62.5, 50), "$s_2$", 2);
+gdaddedgemulti(3, 4, 0.55, (0, 0), 2);
+gdaddedgelabel((62.5, 25), "D", 7);
+
+% all of s3's edges
+gdaddvertexlabel((50, 0), "$s_3$", 7);
+gdaddedgecurvcolor(4, 1, -0.05, 2);
+gdaddedgelabel((50, 10), "I", 0);
+
 % ** drawing the figures and output ********************************************
 
 gdN := gd;

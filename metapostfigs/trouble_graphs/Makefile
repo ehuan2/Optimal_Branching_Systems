@@ -4,7 +4,7 @@ all: build toPdf
 build:
 	mpost ${title}.mp
 
-toPdfTitle=4node_2roots_simple_j2
+toPdfTitle=4node_2roots_simple_j2 5node_2roots_j2 5node_2roots
 
 toPdf:
 	for file in ${toPdfTitle} ; do \
