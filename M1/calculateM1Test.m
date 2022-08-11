@@ -8,7 +8,7 @@
 G = [0 1 0 1; 0 0 1 0; 0 0 0 1; 0 1 0 0];
 roots = [1 0 1 0]; % r and s2 are the roots
 M1 = calculateM1(G, roots);
-exportM1ToCsv(G, roots, 'basic');
+% exportM1ToCsv(G, roots, 'basic');
 
 % expected value:
 % power set of {1, 2, 4, 5}, encoded with basis of {1, 2, 4, 5}
@@ -18,11 +18,11 @@ exportM1ToCsv(G, roots, 'basic');
 G2 = [0 1 1 1 1; 0 0 0 1 1; 0 1 0 0 0; 0 0 1 0 1; 0 0 0 0 0];
 roots2 = [1 0 0 1 0];
 M1_two = calculateM1(G2, roots2);
-exportM1ToCsv(G2, roots2, 'complex');
+% exportM1ToCsv(G2, roots2, 'complex');
 % expected value:
 % basis of {1, 2, 4, 6, 7, 8}, {1, 2, 4, 7, 8, 9}, {1, 2, 6, 7, 8, 9}
 
 G3 = [0 1 0 1 1; 0 0 0 1 0; 0 1 0 1 1; 0 0 0 0 1; 0 1 0 0 0];
 roots3 = [1 0 1 0 0];
 M1_three = calculateM1(G3, roots3);
-exportM1ToCsv(G3, roots3, 'five_node_complex');
+% exportM1ToCsv(G3, roots3, 'five_node_complex');
