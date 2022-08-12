@@ -74,6 +74,7 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	pair C, D, E;
 
 	color purple; purple := (1.35, .14, 2.4);
+	color orange; orange := (1.45, 0.64, 0.05);
 
 	if multi = 0:
 		if s = 0:
@@ -94,9 +95,12 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	elseif colorSelect = 1:
 		drawarrow (A + offset)..C..D withcolor blue;
 		draw (A + offset)..C..(B + offset) withcolor blue;
-	else:
+	elseif colorSelect = 2:
 		drawarrow (A + offset)..C..D withcolor purple;
 		draw (A + offset)..C..(B + offset) withcolor purple;
+	elseif colorSelect = 3:
+		drawarrow (A + offset)..C..D withcolor orange;
+		draw (A + offset)..C..(B + offset) withcolor orange;
 	fi;
 	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;
@@ -186,6 +190,16 @@ def gdaddedgecurv(expr ei,ej,s)=
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
+def gdaddedgecurvcolor(expr ei, ej, s, color)=
+	gdedge[gd][ gdNedge[gd] ][0] := ei;
+	gdedge[gd][ gdNedge[gd] ][1] := ej;
+	gdedgeh[gd][ gdNedge[gd] ][0] := s ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0);
+	gdedgecolor[gd][ gdNedge[gd] ] := color;
+	gdNedge[gd] := gdNedge[gd]+1;
+enddef;	
+
 % color: black = 0, blue = 1, red = 2
 def gdaddedgemulti(expr ei,ej,placement,offset,color)=
 	gdedge[gd][ gdNedge[gd] ][0] := ei;
@@ -207,13 +221,36 @@ pair centralt; centralt:=(post[0]+post[1]+post[2])/3;
 %centralt:=(0,0);
 
 % four node example:
+gdadd("4node_2roots_simple_j2");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 0);
+gdaddvert((50, 0), 1);
+gdaddedgemulti(0, 1, 0.55, (0, 0), 3);
+gdaddedgemulti(1, 2, 0.55, (0, 0), 2);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(3, 0, 0.55, (0, 0), 2);
+gdaddedgecurvcolor(3, 2, 0, 3);
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_2$", 0);
+gdaddvertexlabel((50, 0), "$r_1$", 2);
+gdaddvertexlabel((50, 50), "$s_2$", 2);
+
+% edge labels:
+gdaddedgelabel((25, 50), "B", 1);
+gdaddedgelabel((25, 25), "D", 5);
+gdaddedgelabel((50, 25), "C", 2);
+gdaddedgelabel((25, 0), "E", 3);
+
+% four node example:
 gdadd("4node_2roots_simple");
 gdaddvert((0, 0), 0);
 gdaddvert((0, 50), 1);
 gdaddvert((50, 50), 0);
 gdaddvert((50, 0), 1);
-gdaddedgemulti(1, 2, 0.55, (0, 0), 2);
-gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(0, 1, 0.55, (0, 0), 0);
+gdaddedgemulti(1, 2, 0.55, (0, 0), 0);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 0);
 gdaddedgemulti(3, 0, 0.55, (0, 0), 0);
 gdaddedgecurv(3, 2, 0);
 gdaddvertexlabel((0, 0), "$s_1$", 0);
@@ -223,6 +260,7 @@ gdaddvertexlabel((50, 50), "$s_2$", 2);
 
 % edge labels:
 gdaddedgelabel((25, 50), "B", 1);
+gdaddedgelabel((0, 25), "A", 0);
 gdaddedgelabel((25, 25), "D", 5);
 gdaddedgelabel((50, 25), "C", 2);
 gdaddedgelabel((25, 0), "E", 3);
