@@ -74,6 +74,7 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	pair C, D, E;
 
 	color purple; purple := (1.35, .14, 2.4);
+	color orange; orange := (1.45, 0.64, 0.05);
 
 	if multi = 0:
 		if s = 0:
@@ -94,9 +95,12 @@ vardef gredge(expr A,B,s,multi,offset,colorSelect) =
 	elseif colorSelect = 1:
 		drawarrow (A + offset)..C..D withcolor blue;
 		draw (A + offset)..C..(B + offset) withcolor blue;
-	else:
+	elseif colorSelect = 2:
 		drawarrow (A + offset)..C..D withcolor purple;
 		draw (A + offset)..C..(B + offset) withcolor purple;
+	elseif colorSelect = 3:
+		drawarrow (A + offset)..C..D withcolor orange;
+		draw (A + offset)..C..(B + offset) withcolor orange;
 	fi;
 	%draw A..C..B withpen pencircle scaled it withcolor black;
 %	draw A--B withpen pencircle scaled it withcolor black;
@@ -186,6 +190,16 @@ def gdaddedgecurv(expr ei,ej,s)=
 	gdNedge[gd] := gdNedge[gd]+1;
 enddef;
 
+def gdaddedgecurvcolor(expr ei, ej, s, color)=
+	gdedge[gd][ gdNedge[gd] ][0] := ei;
+	gdedge[gd][ gdNedge[gd] ][1] := ej;
+	gdedgeh[gd][ gdNedge[gd] ][0] := s ;
+	gdedgeh[gd][ gdNedge[gd] ][1] := 0 ;
+	gdedgeoffset[gd][ gdNedge[gd] ] := (0, 0);
+	gdedgecolor[gd][ gdNedge[gd] ] := color;
+	gdNedge[gd] := gdNedge[gd]+1;
+enddef;	
+
 % color: black = 0, blue = 1, red = 2
 def gdaddedgemulti(expr ei,ej,placement,offset,color)=
 	gdedge[gd][ gdNedge[gd] ][0] := ei;
@@ -213,7 +227,6 @@ gdaddvert((0, 50), 1);
 gdaddvert((50, 50), 1);
 gdaddvert((50, 0), 0);
 gdaddedgemulti(1, 0, 0.55, (0, 0), 0);
-gdaddedgemulti(1, 2, 0.55, (0, 0), 0);
 gdaddedgemulti(2, 0, 0.55, (0, 0), 0);
 gdaddedgemulti(0, 3, 0.55, (0, 0), 0);
 gdaddedgecurv(3, 2, 0);
@@ -227,13 +240,132 @@ gdaddvertexlabel((50, 0), "$s_2$", 2);
 gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 50), "B", 1);
 gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((50, 25), "C", 0);
-gdaddedgelabel((25, 0), "E", 1);
-gdaddedgelabel((25, -7.5), "F", 3);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((50, 25), "B", 0);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+gdadd("4node_2roots_complex_j2_one");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 2);
+gdaddedgecurvcolor(3, 2, 0, 3);
+
+gdaddedgecurvcolor(3, 0, 0.15, 3);
+gdaddedgecurvcolor(2, 3, 0.15, 2);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((50, 25), "B", 0);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+gdadd("4node_2roots_complex_j2_two");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgecurvcolor(3, 2, 0, 3);
+
+gdaddedgecurvcolor(3, 0, 0.15, 3);
+gdaddedgecurvcolor(2, 3, 0.15, 2);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((50, 25), "B", 0);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+gdadd("4node_2roots_complex_j2_three");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 3);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 3);
+gdaddedgecurvcolor(3, 2, 0, 3);
+
+gdaddedgecurvcolor(2, 3, 0.15, 2);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((50, 25), "B", 0);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+gdadd("4node_2roots_complex_j2_four");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 2);
+
+gdaddedgecurvcolor(3, 0, 0.15, 3);
+gdaddedgecurvcolor(2, 3, 0.15, 3);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+gdadd("4node_2roots_complex_j2_five");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 3);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 3);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 3);
+gdaddedgecurvcolor(3, 2, 0, 2);
+
+gdaddedgecurvcolor(3, 0, 0.15, 2);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((50, 25), "B", 0);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
 
 % four node example:
 gdadd("4node_2roots_r1_branchings_1");
@@ -251,7 +383,7 @@ gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
 gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 0), "E", 1);
+gdaddedgelabel((25, 0), "D", 1);
 
 % four node example:
 gdadd("4node_2roots_r2_branchings_a");
@@ -268,8 +400,8 @@ gdaddvertexlabel((50, 0), "$s_2$", 2);
 gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((25, 0), "E", 1);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
 
 % four node example:
 gdadd("4node_2roots_r2_branchings_b");
@@ -287,8 +419,8 @@ gdaddvertexlabel((50, 0), "$s_2$", 2);
 gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((57.5, 25), "F", 2);
 
 % four node example:
 gdadd("4node_2roots_r2_branchings_c");
@@ -306,8 +438,8 @@ gdaddvertexlabel((50, 0), "$s_2$", 2);
 gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, -7.5), "F", 3);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
 
 % four node example:
 gdadd("4node_2roots_branching_1b");
@@ -328,9 +460,9 @@ gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
 gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((25, 0), "E", 1);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((57.5, 25), "F", 2);
 
 % four node example:
 gdadd("4node_2roots_branching_1c");
@@ -351,18 +483,18 @@ gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
 gdaddedgelabel((0, 25), "A", 0);
-gdaddedgelabel((25, 0), "E", 1);
-gdaddedgelabel((25, -7.5), "F", 3);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
 
 % four node example:
-gdadd("4node_2roots_j1");
+gdadd("4node_2roots_j1_one");
 gdaddvert((0, 0), 0);
 gdaddvert((0, 50), 1);
 gdaddvert((50, 50), 1);
 gdaddvert((50, 0), 0);
-gdaddedgemulti(2, 0, 0.55, (0, 0), 2);
-gdaddedgemulti(0, 3, 0.55, (0, 0), 2);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 0);
 
 gdaddedgecurv(3, 0, 0.15);
 gdaddedgecurv(2, 3, 0.15);
@@ -373,10 +505,57 @@ gdaddvertexlabel((50, 0), "$s_2$", 2);
 gdaddvertexlabel((50, 50), "$r_2$", 2);
 
 % edge labels:
-gdaddedgelabel((25, 25), "D", 5);
-gdaddedgelabel((25, 0), "E", 1);
-gdaddedgelabel((25, -7.5), "F", 3);
-gdaddedgelabel((57.5, 25), "G", 2);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+% four node example:
+gdadd("4node_2roots_j1_two");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 0);
+
+gdaddedgecurv(3, 0, 0.15);
+gdaddedgecurv(2, 3, 0.15);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
+% four node example:
+gdadd("4node_2roots_j1_three");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 0);
+
+gdaddedgecurv(2, 3, 0.15);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((57.5, 25), "F", 2);
+
 
 
 % ** drawing the figures and output ********************************************
