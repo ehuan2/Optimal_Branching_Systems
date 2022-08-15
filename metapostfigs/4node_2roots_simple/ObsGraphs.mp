@@ -237,6 +237,7 @@ gdaddvertexlabel((50, 0), "$r_1$", 2);
 gdaddvertexlabel((50, 50), "$s_2$", 2);
 
 % edge labels:
+gdaddedgelabel((0, 25), "A", 0);
 gdaddedgelabel((25, 50), "B", 1);
 gdaddedgelabel((25, 25), "D", 5);
 gdaddedgelabel((50, 25), "C", 2);
