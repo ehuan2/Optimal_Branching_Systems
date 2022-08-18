@@ -1,3 +1,40 @@
+% example graphs:
+
+% three node example:
+% Edge numbering to letters: A = 1, B = 2, C = 3
+% nodes to letters: 1 = r, 2 = s1, 3 = s2
+G = [0 1 1; 0 0 1; 0 0 0];
+roots = [1 0 0];
+[M2_three_nodes_1_root, Arref_three_nodes_1_root] = calculateM2(G);
+
+% three node, 2 roots:
+% Edge numbering to letters: A = 1, B = 2, C = 3
+% nodes to letters: 1 = r1, 2 = t, 3 = r2
+G = [0 1 1; 0 0 1; 0 0 0];
+roots = [1 0 1];
+[M2_three_nodes_2_roots, Arref_three_nodes_2_roots] = calculateM2(G);
+
+% four nodes, 1 root:
+% Edge numbering to letters: E = 1, C = 2, A = 3, D = 4, B = 5
+% nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = s3
+G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
+roots = [1 0 0 0];
+[M2_four_nodes_1_root, Arref_four_nodes_1_root] = calculateM2(G);
+
+% four nodes, 2 roots:
+% Edge numbering to letters: E = 1, C = 2, A = 3, D = 4, B = 5
+% nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = r2
+G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
+roots = [1 0 0 1];
+[M2_four_nodes_2_roots, Arref_four_nodes_2_roots] = calculateM2(G);
+
+% five nodes, 2 roots:
+% Edge numbering to letters: A = 1, H = 2, E = 3, D = 4, I = 5, B = 6, C = 7
+% nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = s3, 5 = r2
+G = [0 1 1 1 0; 0 0 0 0 0; 0 0 0 1 0; 0 1 0 0 0; 0 1 1 0 0];
+roots = [1 0 0 0 1];
+[M2_five_nodes_2_roots, Arref_five_nodes_2_roots] = calculateM2(G);
+
 % four node example:
 % represent it by a 4 x 4 matrix, it goes r, s1, s2, s3
 % we're using 1's to indicate it, and the row represents beginning of edge
