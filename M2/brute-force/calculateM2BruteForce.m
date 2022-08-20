@@ -45,23 +45,25 @@ function [M2] = calculateM2BruteForce(G, k)
   end
 
   % Step 3: Create a cell array of all the edges, and then choose numEdges of them 
-  while numEdges > 0
-    allNumEdgesets = nchoosek(allEdges, numEdges);
-    for i = 1:size(allNumEdgesets, 1)
-      edgeset = allNumEdgesets(i,:);
-      if isEdgesetKForestPartitionable(edgeset) == 1
-        M2{M2Counter} = edgeset;
-        M2Counter = M2Counter + 1;
-      end
-    end
-
-    if M2Counter == 1
-      % ie there's no added edgeset
-      numEdges = numEdges - 1;
-    else
-      break;
+  n = length(G);
+  numEdges = (n - k) * k;
+  % while numEdges > 0
+  allNumEdgesets = nchoosek(allEdges, numEdges);
+  for i = 1:size(allNumEdgesets, 1)
+    edgeset = allNumEdgesets(i,:);
+    if isEdgesetKForestPartitionable(edgeset) == 1
+      M2{M2Counter} = edgeset;
+      M2Counter = M2Counter + 1;
     end
   end
+
+    % if M2Counter == 1
+    %   % ie there's no added edgeset
+    %   numEdges = numEdges - 1;
+    % else
+    %   break;
+    % end
+  % end
 
 end
 
