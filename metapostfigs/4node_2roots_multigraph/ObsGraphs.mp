@@ -247,6 +247,31 @@ gdaddedgelabel((25, 0), "D", 1);
 gdaddedgelabel((25, -7.5), "E", 3);
 gdaddedgelabel((57.5, 25), "F", 2);
 
+% four node example:
+gdadd("4node_2roots_complex_v2");
+gdaddvert((0, 0), 0);
+gdaddvert((0, 50), 1);
+gdaddvert((50, 50), 1);
+gdaddvert((50, 0), 0);
+gdaddedgemulti(1, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(2, 0, 0.55, (0, 0), 0);
+gdaddedgemulti(0, 3, 0.55, (0, 0), 0);
+
+gdaddedgecurv(3, 0, 0.15);
+gdaddedgecurv(2, 3, 0.15);
+
+gdaddvertexlabel((0, 0), "$s_1$", 0);
+gdaddvertexlabel((0, 50), "$r_1$", 0);
+gdaddvertexlabel((50, 0), "$s_2$", 2);
+gdaddvertexlabel((50, 50), "$r_2$", 2);
+
+% edge labels:
+gdaddedgelabel((0, 25), "A", 0);
+gdaddedgelabel((25, 25), "C", 5);
+gdaddedgelabel((25, 0), "D", 1);
+gdaddedgelabel((25, -7.5), "E", 3);
+gdaddedgelabel((57.5, 25), "F", 2);
+
 gdadd("4node_2roots_complex_j2_one");
 gdaddvert((0, 0), 0);
 gdaddvert((0, 50), 1);
