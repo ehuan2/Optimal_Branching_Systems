@@ -1,39 +1,69 @@
 % includes basically
 addpath('M1/')
 addpath('util/')
+addpath('M2/')
+addpath('M2/brute-force')
+addpath('M2/brute-force/SetPartFolder/SetPartFolder')
 
 %% three node example:
 % Edge numbering to letters: A = 1, B = 2, C = 3
 % nodes to letters: 1 = r, 2 = s1, 3 = s2
+clc();
 G = [0 1 1; 0 0 1; 0 0 0];
 roots = [1 0 0];
 three_node_mapping = containers.Map({1, 2, 3}, {'A', 'C', 'B'});
 M1 = calculateM1(G, roots);
-M1 = mapEdgeNumbersToLetters(M1, three_node_mapping);
 branchings = branchingSystems(G, roots);
+
+% adding in the intersection
+M2 = calculateM2BruteForce(G, 1);
+
+M1 = mapEdgeNumbersToLetters(M1, three_node_mapping);
 branchings = mapEdgeNumbersToLetters(branchings, three_node_mapping);
+M2 = mapEdgeNumbersToLetters(M2, three_node_mapping);
+
+intersects = cellArrayIntersection(M1, M2);
+
 fprintf('\n three nodes, 1 root J1:\n')
 prettyPrintCellArray(M1);
 fprintf('\n three nodes, 1 root branchings:\n')
 prettyPrintCellArray(branchings);
+fprintf('\n three nodes, 1 root M1:\n')
+prettyPrintCellArray(M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% three node, 2 roots:
 % Edge numbering to letters: A = 1, B = 2, C = 3
 % nodes to letters: 1 = r1, 2 = t, 3 = r2
+clc();
 G = [0 1 1; 0 0 1; 0 0 0];
 roots = [1 0 1];
 M1 = calculateM1(G, roots);
 branchings = branchingSystems(G, roots);
+M2 = calculateM2BruteForce(G, 2);
 M1 = mapEdgeNumbersToLetters(M1, three_node_mapping);
 branchings = mapEdgeNumbersToLetters(branchings, three_node_mapping);
+M2 = mapEdgeNumbersToLetters(M2, three_node_mapping);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+
 fprintf('\n three nodes, 2 roots J1:\n')
 prettyPrintCellArray(M1);
 fprintf('\n three nodes, 2 roots branchings:\n')
 prettyPrintCellArray(branchings);
+fprintf('\n three nodes, 2 root M2:\n')
+prettyPrintCellArray(M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% four nodes, 1 root:
 % Edge numbering to letters: E = 1, C = 2, A = 3, D = 4, B = 5
 % nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = s3
+clc();
 G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
 roots = [1 0 0 0];
 four_node_mapping = containers.Map({1, 2, 3, 4, 5}, {'E', 'C', 'A', 'D', 'B'});
@@ -41,14 +71,25 @@ M1 = calculateM1(G, roots);
 M1 = mapEdgeNumbersToLetters(M1, four_node_mapping);
 branchings = branchingSystems(G, roots);
 branchings = mapEdgeNumbersToLetters(branchings, four_node_mapping);
+M2 = calculateM2BruteForce(G, 1);
+M2 = mapEdgeNumbersToLetters(M2, four_node_mapping);
 fprintf('\nfour nodes 1 root J1:\n')
 prettyPrintCellArray(M1);
 fprintf('\n four nodes 1 root branchings:\n')
 prettyPrintCellArray(branchings);
+fprintf('\n four nodes, 1 root, M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% four nodes, 2 roots:
 % Edge numbering to letters: E = 1, C = 2, A = 3, D = 4, B = 5
 % nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = r2
+clc();
 G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
 roots = [1 0 0 1];
 mapping = containers.Map({1, 2, 3, 4, 5}, {'E', 'C', 'A', 'D', 'B'});
@@ -56,37 +97,109 @@ M1 = calculateM1(G, roots);
 branchings = branchingSystems(G, roots);
 M1 = mapEdgeNumbersToLetters(M1, mapping);
 branchings = mapEdgeNumbersToLetters(branchings, mapping);
+
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, four_node_mapping);
+
 fprintf('\nfour nodes 2 roots J1:\n')
 prettyPrintCellArray(M1);
 fprintf('\n four nodes 2 roots branchings:\n')
 prettyPrintCellArray(branchings);
+fprintf('\n four nodes, 2 roots, M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
+
+%% single edge:
+% 3 nodes, 1 root, 1 edge
+clc();
+G = [0 0 1; 0 0 0; 0 0 0];
+roots = [1 1 0];
+M1 = calculateM1(G, roots);
+branchings = branchingSystems(G, roots);
+M1 = mapEdgeNumbersToLetters(M1, mapping);
+branchings = mapEdgeNumbersToLetters(branchings, mapping);
+M2 = calculateM2BruteForce(G, 1);
+mapping = containers.Map({1}, {'A'});
+M2 = mapEdgeNumbersToLetters(M2, mapping);
+
+fprintf('\n three nodes single edge J1:\n')
+prettyPrintCellArray(M1);
+fprintf('\n branchings:\n')
+prettyPrintCellArray(branchings);
+fprintf('\n M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% five nodes, 2 roots:
 % Edge numbering to letters: A = 1, H = 2, E = 3, D = 4, I = 5, B = 6, C = 7
 % nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = s3, 5 = r2
+clc();
 G = [0 1 1 1 0; 0 0 0 0 0; 0 0 0 1 0; 0 1 0 0 0; 0 1 1 0 0];
 roots = [1 0 0 0 1];
-M1_five_nodes_2_roots = calculateM1(G, roots);
-branchings_five_nodes_2_roots = branchingSystems(G, roots);
+mapping = containers.Map({1, 2, 3, 4, 5, 6, 7}, {'A', 'H', 'E', 'D', 'I', 'B', 'C'});
+
+M1 = calculateM1(G, roots);
+branchings = branchingSystems(G, roots);
+M2 = calculateM2BruteForce(G, 2);
+
+M1 = mapEdgeNumbersToLetters(M1, mapping);
+M2 = mapEdgeNumbersToLetters(M2, mapping);
+branchings = mapEdgeNumbersToLetters(branchings, mapping);
+
+fprintf('\n five nodes 2 roots 7 edges J1:\n')
+prettyPrintCellArray(M1);
+fprintf('\n branchings:\n')
+prettyPrintCellArray(branchings);
+fprintf('\n M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% four node multigraph:
 % edge numbering to letters: A = 1, C = 2, F = 3, D = 4, B = 5, E = 6
 % order of rows: r1, r2, s1, s2
+clc();
 G = [0 0 1 0; 0 0 1 1; 0 0 0 1; 0 1 1 0];
 roots = [1 1 0 0];
 mapping = containers.Map({1, 2, 3, 4, 5, 6}, {'A', 'C', 'F', 'D', 'B', 'E'});
-M1_four_nodes_multigraph = calculateM1(G, roots);
-M1_four_nodes_multigraph = mapEdgeNumbersToLetters(M1_four_nodes_multigraph, mapping);
+M1 = calculateM1(G, roots);
+M1 = mapEdgeNumbersToLetters(M1, mapping);
 fprintf('J1, four node multigraph:\n')
-prettyPrintCellArray(M1_four_nodes_multigraph);
-branchings_four_nodes_multigraph = branchingSystems(G, roots);
-branchings_four_nodes_multigraph = mapEdgeNumbersToLetters(branchings_four_nodes_multigraph, mapping);
+prettyPrintCellArray(M1);
+branchings = branchingSystems(G, roots);
+branchings = mapEdgeNumbersToLetters(branchings, mapping);
 fprintf('Branchings, four node multigraph:\n')
-prettyPrintCellArray(branchings_four_nodes_multigraph);
+prettyPrintCellArray(branchings);
+
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, mapping);
+fprintf('\nFour node multigraph M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% four node multigraph version 2:
 % edge numbering to letters: A = 1, C = 2, F = 3, D = 4, E = 5
 % order of rows: r1, r2, s1, s2
+clc();
 G = [0 0 1 0; 0 0 1 1; 0 0 0 1; 0 0 1 0];
 roots = [1 1 0 0];
 mapping = containers.Map({1, 2, 3, 4, 5}, {'A', 'C', 'F', 'D', 'E'});
@@ -98,10 +211,20 @@ fprintf('\nFour node multigraph v2 J1:\n')
 prettyPrintCellArray(M1);
 fprintf('\nFour node multigraph v2 branchings:\n')
 prettyPrintCellArray(branchings);
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, mapping);
+fprintf('\nfour node multigraph v2 J2:\n')
+prettyPrintCellArray(M2);
+% intersection:
+intersects = cellArrayIntersection(M1, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings));
 
 %% five nodes, 2 roots, 9 edges:
 % Edge numbering to letters: A = 1, H = 2, E = 3, F = 4, D = 5, I = 6, G = 7, B = 8, C = 9
 % nodes to letters: 1 = r1, 2 = s1, 3 = s2, 4 = s3, 5 = r2
+clc();
 G = [0 1 1 1 1; 0 0 0 0 0; 0 0 0 1 0; 0 1 0 0 1; 0 1 1 0 0];
 roots = [1 0 0 0 1];
 M1_five_nodes_2_roots_nine_edges = calculateM1(G, roots);
@@ -113,9 +236,19 @@ fprintf('\nJ1:\n')
 prettyPrintCellArray(M1_five_nodes_2_roots_nine_edges);
 fprintf('\nbranchings:\n')
 prettyPrintCellArray(branchings_five_nodes_2_roots_nine_edges);
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, five_node_2_roots_nine_edges_mapping);
+fprintf('M2:\n')
+prettyPrintCellArray(M2);
+% intersection:
+intersects = cellArrayIntersection(M1_five_nodes_2_roots_nine_edges, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings_five_nodes_2_roots_nine_edges));
 
 %% five node, K3,3 minor:
 % nodes to letters: 1 = r1, 2 = r2, 3 = s1, 4 = s2, 5 = s3
+clc();
 G = [0 0 1 0 0; 0 0 0 1 0; 0 0 0 1 1; 0 0 1 0 1; 0 0 1 1 0];
 roots = [1 1 0 0 0];
 five_node_k33_minor_mapping = containers.Map({1, 2, 3, 4, 5, 6, 7, 8}, {'A', 'B', 'D', 'H', 'C', 'E', 'G', 'F'});
@@ -123,13 +256,26 @@ M1_five_nodes_k33 = calculateM1(G, roots);
 branchings_five_nodes_k33 = branchingSystems(G, roots);
 M1_five_nodes_k33 = mapEdgeNumbersToLetters(M1_five_nodes_k33, five_node_k33_minor_mapping);
 branchings_five_nodes_k33 = mapEdgeNumbersToLetters(branchings_five_nodes_k33, five_node_k33_minor_mapping);
+M2_five_nodes_k33 = calculateM2BruteForce(G, 2);
+M2_five_nodes_k33 = mapEdgeNumbersToLetters(M2_five_nodes_k33, five_node_k33_minor_mapping);
+
 fprintf('J1:\n')
 prettyPrintCellArray(M1_five_nodes_k33);
 fprintf('Branchings:\n')
 prettyPrintCellArray(branchings_five_nodes_k33);
+fprintf('\n Five nodes, K3-3, M2:\n')
+prettyPrintCellArray(M2_five_nodes_k33);
+
+% intersection:
+intersects = cellArrayIntersection(M1_five_nodes_k33, M2_five_nodes_k33);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings_five_nodes_k33));
+
 
 %% five node, fish:
 % nodes to letters: 1 = r1, 2 = r2, 3 = s1, 4 = s2, 5 = s3
+clc();
 G = [0 0 1 0 0; 0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1; 0 0 0 1 0];
 roots = [1 1 0 0 0];
 five_node_fish_mapping = containers.Map({1, 2, 3, 4, 5}, {'D', 'E', 'A', 'B', 'C'});
@@ -141,9 +287,21 @@ branchings_five_nodes_fish = branchingSystems(G, roots);
 branchings_five_nodes_fish = mapEdgeNumbersToLetters(branchings_five_nodes_fish, five_node_fish_mapping);
 fprintf('\n Five nodes, Fish Branchings:\n')
 prettyPrintCellArray(branchings_five_nodes_fish);
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, five_node_fish_mapping);
+fprintf('\n Five nodes, Fish M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1_five_nodes_fish, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings_five_nodes_fish));
+
 
 %% five node, fish v2:
 % nodes to letters: 1 = r1, 2 = r2, 3 = s1, 4 = s2, 5 = s3
+clc();
 G = [0 0 1 0 0; 0 0 1 0 1; 0 0 0 1 0; 0 0 0 0 1; 0 0 0 1 0];
 roots = [1 1 0 0 0];
 five_node_fish_mapping_v2 = containers.Map({1, 2, 4, 5, 6, 3}, {'D', 'E', 'A', 'B', 'C', 'F'});
@@ -155,9 +313,21 @@ branchings_five_nodes_fish_v2 = branchingSystems(G, roots);
 branchings_five_nodes_fish_v2 = mapEdgeNumbersToLetters(branchings_five_nodes_fish_v2, five_node_fish_mapping_v2);
 fprintf('\n Five nodes, Fish Version 2 Branchings:\n')
 prettyPrintCellArray(branchings_five_nodes_fish_v2);
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, five_node_fish_mapping_v2);
+fprintf('\n Five nodes, Fish v2, M2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1_five_nodes_fish_v2, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings_five_nodes_fish_v2));
+
 
 %% five node, 9 edges v2:
 % nodes to letters: 1 = r1, 2 = s1, 3 = r2, 4 = s2, 5 = s3
+clc();
 G = [0 1 0 1 1; 0 0 0 1 0; 0 1 0 1 1; 0 0 0 0 1; 0 1 0 0 0];
 roots = [1 0 1 0 0];
 five_node_nine_edges_v2_mapping = containers.Map({1, 2, 3, 4, 5, 6, 7, 8, 9}, {'A', 'H', 'E', 'F', 'B', 'C', 'G', 'D', 'I'});
@@ -169,3 +339,13 @@ branchings_five_nodes_2_roots_nine_edges_v2 = branchingSystems(G, roots);
 branchings_five_nodes_2_roots_nine_edges_v2 = mapEdgeNumbersToLetters(branchings_five_nodes_2_roots_nine_edges_v2, five_node_nine_edges_v2_mapping);
 fprintf('\n Five nodes, nine edges Version 2 Branchings:\n')
 prettyPrintCellArray(branchings_five_nodes_2_roots_nine_edges_v2);
+M2 = calculateM2BruteForce(G, 2);
+M2 = mapEdgeNumbersToLetters(M2, five_node_nine_edges_v2_mapping);
+fprintf('\n Five nodes, nine edges v2:\n')
+prettyPrintCellArray(M2);
+
+% intersection:
+intersects = cellArrayIntersection(M1_five_nodes_nine_edges_v2, M2);
+fprintf('\n Intersection: \n')
+prettyPrintCellArray(intersects);
+fprintf('\n Equal: %d\n', isCellArrayEqual(intersects, branchings_five_nodes_2_roots_nine_edges_v2));
