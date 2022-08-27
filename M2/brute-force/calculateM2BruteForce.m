@@ -15,31 +15,35 @@ function [M2] = calculateM2BruteForce(G, k)
     % strategy:
     % Generate all k-partitions of the set using all the edges
     % Step 1: let's get the number of nodes, and generate the k-partitions for it
-    kPartitions = SetPartition(edgeset, k);
 
     % assume it's not partitionable
     edgeSetPartitionable = 0;
 
-    % Step 2: For each group in kPartitions, check if each partition of the group is a forest
-    % if it is a forest, add it to the basis, M2
-    for i = 1:size(kPartitions, 1)
-      group = kPartitions{i};
-      isGroupMadeUpOfForests = 1;
-      % then, go through each partition in the group, and remove each column that's not in the partition
-      for j = 1:size(group, 2)
-        partition = group{j};
-        aRemoveEdgesFromPartition = removeNonPartitionEdges(A, partition);
-        if isForest(aRemoveEdgesFromPartition) == 0
-          % if it's not a forest, then set isGroupMadeOfForests to false, and break
-          isGroupMadeUpOfForests = 0;
+    % we only check if it's partitionable if it has more edges than k
+    if size(edgeset, 2) >= k
+      kPartitions = SetPartition(edgeset, k);
+
+      % Step 2: For each group in kPartitions, check if each partition of the group is a forest
+      % if it is a forest, add it to the basis, M2
+      for i = 1:size(kPartitions, 1)
+        group = kPartitions{i};
+        isGroupMadeUpOfForests = 1;
+        % then, go through each partition in the group, and remove each column that's not in the partition
+        for j = 1:size(group, 2)
+          partition = group{j};
+          aRemoveEdgesFromPartition = removeNonPartitionEdges(A, partition);
+          if isForest(aRemoveEdgesFromPartition) == 0
+            % if it's not a forest, then set isGroupMadeOfForests to false, and break
+            isGroupMadeUpOfForests = 0;
+            break;
+          end
+        end
+
+        if isGroupMadeUpOfForests == 1
+          % if it is a forest, then break, and say it's partitionable
+          edgeSetPartitionable = 1;
           break;
         end
-      end
-
-      if isGroupMadeUpOfForests == 1
-        % if it is a forest, then break, and say it's partitionable
-        edgeSetPartitionable = 1;
-        break;
       end
     end
   end
@@ -64,7 +68,6 @@ function [M2] = calculateM2BruteForce(G, k)
     %   break;
     % end
   % end
-
 end
 
 % evaluates whether or not incidence matrix A is a forest

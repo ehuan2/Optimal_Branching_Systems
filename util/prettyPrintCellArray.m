@@ -4,7 +4,7 @@ function prettyPrintCellArray(p)
     % print each cell array itself
     fprintf('\t{ ')
     for j=1:length(p{i})
-        fprintf('%s ', p{i}{j})
+      fprintf('%d ', p{i}{j})
     end
     fprintf('}\n')
   end
