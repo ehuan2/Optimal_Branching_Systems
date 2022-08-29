@@ -1,12 +1,6 @@
-% this function tests a given graph G and roots, and a given mode
-% mode = 1: tests everything, including intersection
-% mode = 2: only tests the branchingSystems
-% mode = 3: tests everything, and shows it
-% mode = else: tests everything, only shows size
-function hasError = optimalBranchingSystems(G, roots, mapping)
-  clc();
+function obs(G, roots, mapping)
+  clc
   mode = 5;
-  hasError = 0;
 
   % now we calculate J1 and J2, and branchings and intersection
   M1 = calculateM1(G, roots);
@@ -18,15 +12,14 @@ function hasError = optimalBranchingSystems(G, roots, mapping)
     M2 = calculateM2BruteForce(G, k);
     intersects = cellArrayIntersection(M1, M2);
     if isCellArrayEqual(intersects, branchings) == 0
-      hasError = 1; % if they're not the same, there's an error
       fprintf('\nMatrix:\n')
       G
       fprintf('\nRoots:\n')
       roots
-      fprintf('\nM1:\n')
+      fprintf('\nBasis for M1:\n')
       prettyPrintCellArray(M1);
       size(M1)
-      fprintf('\nM2:\n')
+      fprintf('\nBasis for M2:\n')
       prettyPrintCellArray(M2);
       size(M2)
       fprintf('\nIntersection:\n')
@@ -42,7 +35,7 @@ function hasError = optimalBranchingSystems(G, roots, mapping)
     G
     fprintf('\nRoots:\n')
     roots
-    fprintf('\nM1:\n')
+    fprintf('\nBasis for M1:\n')
     size(M1)
     fprintf('\nBranchings:\n')
     size(branchings)
@@ -58,10 +51,10 @@ function hasError = optimalBranchingSystems(G, roots, mapping)
     G
     fprintf('\nRoots:\n')
     roots
-    fprintf('\nM1:\n')
+    fprintf('\nBasis for M1:\n')
     prettyPrintCellArray(M1);
     size(M1)
-    fprintf('\nM2:\n')
+    fprintf('\nBasis for M2:\n')
     prettyPrintCellArray(M2);
     size(M2)
     fprintf('\nIntersection:\n')
@@ -83,9 +76,9 @@ function hasError = optimalBranchingSystems(G, roots, mapping)
     G
     fprintf('\nRoots:\n')
     roots
-    fprintf('\nM1:\n')
+    fprintf('\nBasis for M1:\n')
     prettyPrintCellArray(M1);
-    fprintf('\nM2:\n')
+    fprintf('\nBasis for M2:\n')
     prettyPrintCellArray(M2);
     fprintf('\nIntersection:\n')
     prettyPrintCellArray(intersects);
@@ -100,9 +93,9 @@ function hasError = optimalBranchingSystems(G, roots, mapping)
     G
     fprintf('\nRoots:\n')
     roots
-    fprintf('\nM1:\n')
+    fprintf('\nBasis for M1:\n')
     size(M1)
-    fprintf('\nM2:\n')
+    fprintf('\nBasis for M2:\n')
     size(M2)
     fprintf('\nIntersection:\n')
     size(intersects)
