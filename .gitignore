@@ -3,3 +3,4 @@ metapostfigs/mptextmp.*
 mptextmp.*
 *.eps
 *.asv
+**/__pycache__/

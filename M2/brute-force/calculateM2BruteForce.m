@@ -52,6 +52,8 @@ function [M2] = calculateM2BruteForce(G, k)
   n = length(G);
   numEdges = (n - k) * k;
   % while numEdges > 0
+
+  % size of allNumEdgesets = E choose (n - k) * k -- e.g.: n = 6, k = 3, E = 20, we get 20 choose 9 = ~170k
   allNumEdgesets = nchoosek(allEdges, numEdges);
   for i = 1:size(allNumEdgesets, 1)
     edgeset = allNumEdgesets(i,:);
