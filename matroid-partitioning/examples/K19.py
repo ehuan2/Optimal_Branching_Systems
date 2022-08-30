@@ -3,13 +3,16 @@
 import networkx as nx
 import matroid.partition
 
-def acyclic(edges):
+def uptick():
     global tally
     tally += 1
+
+def acyclic(edges):
+    uptick()
     subgraph = G.edge_subgraph(graph_edges[_] for _ in edges)
     return nx.algorithms.tree.recognition.is_forest(subgraph)
 
-if __name__ == "__main__":
+def run():
     G = nx.complete_graph(19)
     tally = 0
     graph_edges = list(G.edges())
