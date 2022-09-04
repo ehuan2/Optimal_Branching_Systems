@@ -74,6 +74,8 @@ function X = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
           end
         end
 
+        X = setOfXk;
+
         goBackToStep2 = 0;
         goBackToStep4 = 0;
         break;

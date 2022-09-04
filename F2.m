@@ -7,9 +7,11 @@ function isInF2 = F2(G, numRoots, mode)
   allEdges = CellArrayOfNEdges(numEdges);
 
   if mode == 0
+    % F1: transform an adjacency to an incidence
     % then transform from an adjancency to incidence
     [A, transformedG] = adjacencyToIncidenceMatrix(G);
   else
+    % F2: transform the incidence to a non-directed incidence
     % then transform the incidence directed to non-directed (i.e. flip all the -1's)
     A = directedIncidenceToUndirected(G);
   end

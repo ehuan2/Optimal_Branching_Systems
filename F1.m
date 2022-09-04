@@ -35,6 +35,10 @@ function isInF1 = F1(G, roots, mode)
       end
     end
   else
+    % F1 incidence matrix
+    % iterate over all the rows of an incidence matrix
+    % as those are the ones that indicate the nodes
+    % and checks for the same count as well as incoming to roots
     for i = 1:size(G, 1)
       % iterate over all the rows
       row = G(i,:);

@@ -12,7 +12,8 @@ function epsilon = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T)
   [deltaPlusA1, eps1Empty] = calculateDeltaPlus(A1, R);
   eps1 = inf;
   for i = 1:size(deltaPlusA1, 2)
-    [x, y] = deltaPlusA1(i);
+    x = deltaPlusA1{i}(1);
+    y = deltaPlusA1{i}(2);
 
     calc = c1(x) - c1(y);
 
@@ -25,7 +26,8 @@ function epsilon = wgtMatroidIntersectStep7(c1, c2, A1, A2, R, m1, m2, S, T)
   [deltaPlusA2, eps2Empty] = calculateDeltaPlus(A2, R);
   eps2 = inf;
   for i = 1:size(deltaPlusA2, 2)
-    [y, x] = deltaPlusA2(i);
+    y = deltaPlusA2{i}(1);
+    x = deltaPlusA2{i}(2);
 
     calc = c2(x) - c2(y);
 

@@ -28,15 +28,14 @@ function [m1, m2, Sbar, Tbar, A1bar, A2bar, Gbar] = wgtMatroidIntersectStep4(E, 
     Gbar = zeros(E, E); % form a |E| x |E| matrix, iterate over the two Aibar's and add edges
 
     for i = 1:size(A1bar, 2)
-      [x y] = A1bar(i);
+      x = A1bar{i}(1);
+      y = A1bar{i}(2);
       Gbar(x, y) = 1;
-      Gbar(y, x) = 1;
     end
 
     for i = 1:size(A2bar, 2)
       y = A2bar{i}(1);
       x = A2bar{i}(2);
-      Gbar(x, y) = 1;
       Gbar(y, x) = 1;
     end
 end

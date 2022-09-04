@@ -59,7 +59,7 @@ function [VofP, pathLength] = calculateVofP(backtrack, TbarNode)
   % should not get to -1, but just in case
   while current ~= 0 && current ~= -1
     VofP(current) = 1;
-    current = backtrack(TbarNode);
+    current = backtrack(current);
     pathLength = pathLength + 1;
   end
 end

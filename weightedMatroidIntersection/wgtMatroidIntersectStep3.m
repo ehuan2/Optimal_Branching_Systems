@@ -55,7 +55,7 @@ function [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk, F1, F2, C1, C2)
       % now we include y if Xk U {y} is in F1
       XkUnionY = Xk;
       XkUnionY(y) = 1;
-      if doesXBelongInY(XkUnionY, F1) == 1
+      if F1(XkUnionY) == 1
         S(y) = 1;
       end
     end
@@ -69,7 +69,7 @@ function [A1, A2, S, T] = wgtMatroidIntersectStep3(E, Xk, F1, F2, C1, C2)
       % now we include y if Xk U {y} is in F1
       XkUnionY = Xk;
       XkUnionY(y) = 1;
-      if doesXBelongInY(XkUnionY, F2) == 1
+      if F2(XkUnionY) == 1
         T(y) = 1;
       end
     end
@@ -87,24 +87,3 @@ function CiActualSet = getCiFromKeyY(Ci, y)
     end
   end
 end
-
-% given a matrix X, of size 1 x |E| we check if it belongs in cell array Y, where Y is a 1 x N cell array
-function belongToBool = doesXBelongInY(X, Y)
-  % first, we iterate over X to collect a cell array, and then use this to check in the for loop  
-  XasCellArray = {};
-  xIteratorCounter = 1;
-  for i = 1:size(X, 2)
-    if X(i) == 1
-      XasCellArray{xIteratorCounter} = i;
-      xIteratorCounter = xIteratorCounter + 1;
-    end
-  end
-
-  belongToBool = 0;
-  for i = 1:size(Y, 2)
-    if isequal(Y{i}, XasCellArray)
-      belongToBool = 1;
-    end
-  end
-end
-
