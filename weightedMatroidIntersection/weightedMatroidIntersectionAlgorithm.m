@@ -24,6 +24,7 @@ function X = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   goBackToStep4 = 1;
 
   while goBackToStep2 == 1
+    fprintf('Testing k = %d', k);
     % step 2:
     [C1, C2] = wgtMatroidIntersectStep2(E, setOfXk{k + 1}, F1, F2);
 

@@ -3,6 +3,21 @@ addpath('util/')
 addpath('M2/')
 addpath('M2/brute-force/SetPartFolder/SetPartFolder')
 addpath('weightedMatroidIntersection/')
+addpath('matroidPartitioning/')
+addpath('F2/')
+
+%% Testing matroid intersection:
+clc();
+G = [0 0 -1 0 -1; -1 0 0 1 1; 0 1 1 -1 0; 1 -1 0 0 0];
+mode = 1;
+roots = [1 0 0 0];
+F1WithoutMode = @(edgeset) (F1(transformGBasedOffEdgeset(G, edgeset, mode), roots, mode));
+F2WithoutMode = @(edgeset) F2(transformGBasedOffEdgeset(G, edgeset, mode), numberOfRoots(roots), mode);
+disp(matroidIntersection(5, F1WithoutMode, F2WithoutMode));
+
+%% matroid partitioning:
+G = [0 1 0 1 1];
+disp(matroidPartitioning(G, 0, 5));
 
 %% F1 family testing: Adjancency
 clc();
@@ -226,6 +241,7 @@ disp(optimalBranchingSystems(G, roots, c));
 % result: D, E, F, G - a correct branching system
 
 %% 40 edges, 20 node example, with 5 roots
+clc();
 E = 40;
 n = 20;
 k = 5;
