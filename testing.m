@@ -1,107 +1,3 @@
-%% includes
-addpath('util/')
-addpath('M2/')
-addpath('M2/brute-force/SetPartFolder/SetPartFolder')
-addpath('weightedMatroidIntersection/')
-addpath('matroidPartitioning/')
-addpath('F2/')
-
-%% Testing matroid intersection:
-clc();
-G = [0 0 -1 0 -1; -1 0 0 1 1; 0 1 1 -1 0; 1 -1 0 0 0];
-mode = 1;
-roots = [1 0 0 0];
-F1WithoutMode = @(edgeset) (F1(transformGBasedOffEdgeset(G, edgeset, mode), roots, mode));
-F2WithoutMode = @(edgeset) F2(transformGBasedOffEdgeset(G, edgeset, mode), numberOfRoots(roots), mode);
-disp(matroidIntersection(5, F1WithoutMode, F2WithoutMode));
-
-%% matroid partitioning:
-G = [0 1 0 1 1];
-disp(matroidPartitioning(G, 0, 5));
-
-%% F1 family testing: Adjancency
-clc();
-G = [0 1 1; 0 0 1; 0 0 0];
-roots = [1 0 0];
-disp('Three nodes, 1 root')
-F1(G, roots, 0)
-G = [0 1 1; 0 0 0; 0 0 0];
-roots = [1 0 0];
-disp('Three nodes, 1 root, but no third edge')
-F1(G, roots, 0)
-disp('Three nodes, 1 root, but incoming to root')
-G = [0 1 1; 1 0 0; 0 0 0];
-F1(G, roots, 0)
-disp('Four nodes, 2 roots')
-G = [0 1 1 0; 0 0 0 0; 0 1 0 0; 0 0 1 0];
-roots = [1 0 0 1];
-F1(G, roots, 0)
-
-%% F1 family testing: Incidence
-clc();
-disp('Incidence:')
-G = [-1 0 -1; 1 -1 0; 0 1 1];
-roots = [1 0 0];
-disp('Three nodes, 1 root')
-F1(G, roots, 1)
-G = [-1 0; 1 -1; 0 1];
-roots = [1 0 0];
-disp('Three nodes, 1 root, but no third edge')
-F1(G, roots, 1)
-disp('Three nodes, 1 root, but incoming to root')
-G = [-1 0 1; 1 -1 -1; 0 1 0];
-F1(G, roots, 1)
-disp('Four nodes, 2 roots')
-G = [0 -1 0 -1; 0 0 1 1; 1 1 -1 0; -1 0 0 0];
-roots = [1 0 0 1];
-F1(G, roots, 1)
-
-%% directed incidence to undirected testing
-G = [0 -1 0 -1; 0 0 1 1; 1 1 -1 0; -1 0 0 0];
-directedIncidenceToUndirected(G)
-
-%% F2 testing: Adjancency
-clc();
-G = [0 1 1; 0 0 1; 0 0 0];
-disp('Three nodes, 1 root')
-F2(G, 1, 0)
-G = [0 1 1; 0 0 0; 0 0 0];
-disp('Three nodes, 1 root, but no third edge')
-F2(G, 1, 0)
-disp('Four nodes, 2 roots')
-G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
-F2(G, 2, 0)
-disp('Four nodes, 2 roots v2')
-G = [0 1 1 0; 0 0 0 0; 0 1 0 0; 0 0 1 0];
-F2(G, 2, 0)
-
-%% F2 family testing: Incidence
-clc();
-disp('Incidence:')
-G = [-1 0 -1; 1 -1 0; 0 1 1];
-roots = [1 0 0];
-disp('Three nodes, 1 root')
-F2(G, 1, 1)
-G = [-1 0; 1 -1; 0 1];
-disp('Three nodes, 1 root, but no third edge')
-F2(G, 1, 1)
-disp('Four nodes, 2 roots')
-G = [0 -1 0 1; 0 -1 0 -1; 0 0 1 1; 1 1 -1 0; -1 0 0 0];
-F2(G, 2, 1)
-disp('Four nodes, 2 roots, v2')
-G = [0 -1 0 -1; 0 0 1 1; 1 1 -1 0; -1 0 0 0];
-F2(G, 2, 1)
-
-%% Testing transforming G
-clc();
-G = [0 1 0 1; 0 0 1 0; 1 1 0 1; 0 0 1 0];
-edgeset = [1 0 1 1 0 1 0];
-transformGBasedOffEdgeset(G, edgeset, 0)
-
-G = [1 0 1 1 0 0 0; -1 1 -1 0 0 -1 1; 0 -1 0 -1 1 1 0; 0 0 0 0 -1 0 -1];
-edgeset = [0 1 1 0 1 1 0];
-transformGBasedOffEdgeset(G, edgeset, 1)
-
 %% OBS Testing:
 
 %% Adjancency: (Be sure to turn mode to 0 in OBS)
@@ -242,13 +138,38 @@ disp(optimalBranchingSystems(G, roots, c));
 
 %% 40 edges, 20 node example, with 5 roots
 clc();
-E = 40;
+E = 80;
 n = 20;
-k = 5;
+k = 18;
 G = randomIncidenceMatrix(E, n, k);
 roots = generateNRoots(n, k);
 c = rand(1, E);
 
-disp('Forty edges, 20 node example, 5 roots')
+disp('Forty edges, 20 node example, 2 roots')
 disp(optimalBranchingSystems(G, roots, c));
 
+% this function generates a random incidence matrix with E edges
+% avoiding going into any roots (roots is always the a number of 1's followed by 0's, so we just pass in the number)
+function incidence = randomIncidenceMatrix(E, n, roots)
+  incidence = zeros(n, E);
+
+  for i = 1:E
+    % choose a random node to enter
+    enterNode = randi([(roots + 1) n], 1, 1);
+    incidence(enterNode, i) = 1;
+    % choose a random node to leave
+    exitNode = randi([1 n], 1, 1);
+    if exitNode == enterNode
+      exitNode = exitNode - 1; % subtract one away 
+    end
+    incidence(exitNode, i) = -1;
+  end
+end
+
+% this function generates a 1 x n matrix of E roots
+function roots = generateNRoots(n, E)
+  roots = zeros(1, n);
+  for i = 1:E
+    roots(i) = 1;
+  end
+end
