@@ -1,7 +1,7 @@
 % ** IMPORTANT CONVENTION **
 % We'll be using the -1 to indicate an edge leaving a node
 % and 1 to indicate an edge entering a node, for the incidence matrix
-function OBS = optimalBranchingSystems(G, roots, c)
+function optimal_branching_systms = obs(G, roots, c)
   mode = 1;
   E = 0;
   if mode == 0
@@ -12,14 +12,14 @@ function OBS = optimalBranchingSystems(G, roots, c)
   setOfXk = weightedMatroidIntersectionAlgorithm(E, F1Wrapper(G, roots, mode), F2Wrapper(G, roots, mode), c);
   if size(setOfXk, 2) ~= 0
     % check it's the right size
-    OBS = setOfXk{size(setOfXk, 2)};
+    optimal_branching_systems = setOfXk{size(setOfXk, 2)};
     k = numberOfRoots(roots);
 
     % if it's not the right size, don't add it in
     n = size(G, 1); % for both incidence and adjacency, both the number of rows
 
-    if countOnes(OBS) ~= k * (n - k)
-      OBS = 'no branching systems...';
+    if countOnes(optimal_branching_systems) ~= k * (n - k)
+      optimal_branching_systems = 'no branching systems...';
     end
   end
 end

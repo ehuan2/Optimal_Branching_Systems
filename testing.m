@@ -6,17 +6,17 @@ clc();
 G = [0 1 1; 0 0 1; 0 0 0];
 roots = [1 0 0];
 c = [0 1 1];
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 c = [0 1 2]; % C is bigger, so {A, C} is the one
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 c = [0 2 1]; % B is bigger, so {A, B} is the one
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Three node, 2 roots:
 clc();
 roots = [1 0 1];
 c = [1 2 3];
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Four nodes, 1 root: 
 % Three branchings here
@@ -29,17 +29,17 @@ clc();
 disp('Four nodes 1 root v1:')
 c = [2 3 0 1 1]; % should be E, C, A
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 disp('Four nodes 1 root v2:')
 c = [3 2 1 0 2]; % should be A, E, B
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 disp('Four nodes 1 root v3:')
 c = [3 2 0 9 4]; % should be A, C, D
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Four nodes, 2 roots:
 clc();
@@ -47,7 +47,7 @@ G = [0 1 1 0; 0 0 0 1; 0 1 0 0; 0 0 1 0];
 roots = [1 0 0 1];
 c = [3 102 0 -9 4];
 disp('Four nodes 2 roots:')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Single edge
 clc();
@@ -55,7 +55,7 @@ G = [0 0 1; 0 0 0; 0 0 0];
 roots = [1 1 0];
 c = [30];
 disp('Single edge')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Incidence matrices: (be sure to add in mode = 1)
 %% Three node example:
@@ -63,17 +63,17 @@ clc();
 G = [-1 0 -1; 1 -1 0; 0 1 1];
 roots = [1 0 0];
 c = [0 1 1];
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 c = [0 1 2]; % C is bigger, so {A, C} is the one
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 c = [0 2 1]; % B is bigger, so {A, B} is the one
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Three node, 2 roots:
 clc();
 roots = [1 0 1];
 c = [1 2 3];
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Four nodes, 1 root: 
 % Three branchings here
@@ -86,17 +86,17 @@ clc();
 disp('Four nodes 1 root v1:')
 c = [0 1 3 1 2]; % should be A, C, E
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 disp('Four nodes 1 root v2:')
 c = [1 3 2 0 3]; % should be A, E, B
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 disp('Four nodes 1 root v3:')
 c = [0 4 2 9 3]; % should be A, C, D
 disp(c)
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Four nodes, 2 roots:
 clc();
@@ -104,7 +104,7 @@ G = [0 0 -1 0 -1; -1 0 0 1 1; 0 1 1 -1 0; 1 -1 0 0 0];
 roots = [1 0 0 1];
 c = [3 102 0 -9 4];
 disp('Four nodes 2 roots:')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% Single edge
 clc();
@@ -112,7 +112,7 @@ G = [-1; 0; 1];
 roots = [1 1 0];
 c = [30];
 disp('Single edge')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% five node, 2 roots:
 clc();
@@ -123,7 +123,7 @@ roots = [1 0 0 0 1];
 c = [3 4 2 5 -2 4 2]; % goes from A, B, C, D, E, H, I
 
 disp('Five node 2 roots:')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 %% four node multigraph:
 clc();
@@ -133,7 +133,7 @@ roots = [1 0 0 1];
 c = [3 4 2 5 -2 4 2]; % goes from A, B, C, D, E, F, G
 
 disp('Four node multigraph:')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 % result: D, E, F, G - a correct branching system
 
 %% 40 edges, 20 node example, with 5 roots
@@ -146,7 +146,7 @@ roots = generateNRoots(n, k);
 c = rand(1, E);
 
 disp('Forty edges, 20 node example, 2 roots')
-disp(optimalBranchingSystems(G, roots, c));
+disp(obs(G, roots, c));
 
 % this function generates a random incidence matrix with E edges
 % avoiding going into any roots (roots is always the a number of 1's followed by 0's, so we just pass in the number)
