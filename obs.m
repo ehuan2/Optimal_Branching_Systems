@@ -1,7 +1,7 @@
 % ** IMPORTANT CONVENTION **
 % We'll be using the -1 to indicate an edge leaving a node
 % and 1 to indicate an edge entering a node, for the incidence matrix
-function optimal_branching_systms = obs(G, roots, c)
+function optimal_branching_systems = obs(G, roots, c)
   mode = 1;
   E = 0;
   if mode == 0
