@@ -2,7 +2,7 @@
 % We'll be using the -1 to indicate an edge leaving a node
 % and 1 to indicate an edge entering a node, for the incidence matrix
 function optimal_branching_systems = obs(G, roots, c)
-  mode = 1;
+  tic;mode = 1;
   E = 0;
   if mode == 0
     E = numberOfEdges(G);
@@ -418,7 +418,7 @@ function X = weightedMatroidIntersectionAlgorithm(E, F1, F2, c)
   goBackToStep4 = 1;
 
   while goBackToStep2 == 1
-    fprintf('Testing k = %d', k);
+    fprintf('Testing k = %d \r', k);toc;
     % step 2:
     [C1, C2] = wgtMatroidIntersectStep2(E, setOfXk{k + 1}, F1, F2);
 
